@@ -12,60 +12,60 @@ const tunnel = require("tunnel-ssh");
 // Express app
 const app = express();
 
-const config = {
-  username: "partha",
-  host: "167.172.152.18",
-  port: 22,
-  dstPort: 27017,
-  localHost: "127.0.0.1",
-  password: "paulteli",
-};
+// const config = {
+//   username: "partha",
+//   host: "167.172.152.18",
+//   port: 22,
+//   dstPort: 27017,
+//   localHost: "127.0.0.1",
+//   password: "paulteli",
+// };
 
 const MONGO_DB_URL = "mongodb://127.0.0.1:27017/testDB";
 
 // Connect to MongoDB Atlas
-const server = tunnel(config, function (error, server) {
-  if (error) {
-    console.log("SSH connection error: " + error);
-  }
-  mongoose.connect("mongodb://localhost:27017/testDB");
+// const server = tunnel(config, function (error, server) {
+//   if (error) {
+//     console.log("SSH connection error: " + error);
+//   }
+//   mongoose.connect("mongodb://localhost:27017/testDB");
 
-  var db = mongoose.connection;
-  db.on("error", console.error.bind(console, "DB connection error:"));
+//   var db = mongoose.connection;
+//   db.on("error", console.error.bind(console, "DB connection error:"));
 
-  db.once("open", function () {
-    // we're connected!
-    console.log("DB connection successful");
-    const port = process.env.PORT || 1000;
-    app.listen(port, () =>
-      console.log("Express app listening on port " + port)
-    );
-    // console.log(db);
-  });
-  console.log("next");
-  return db;
-});
-// mongoose
-//   .connect(MONGO_DB_URL,{newUrlParser: true})
-//   .then(result => {
-
-//     // Listen on port 1000
+//   db.once("open", function () {
+//     // we're connected!
+//     console.log("DB connection successful");
 //     const port = process.env.PORT || 1000;
 //     app.listen(port, () =>
 //       console.log("Express app listening on port " + port)
 //     );
-//   })
-//   .catch(err => {
-//     console.log("Not connected to db: " + err);
+//     // console.log(db);
 //   });
-
-// var db = mongoose.connection;
-
-// // Handle mongo error checking
-// db.on("error", console.error.bind(console, "connection error:"));
-// db.once("open", function() {
-//   console.log("we are connected!");
+//   console.log("next");
+//   return db;
 // });
+mongoose
+  .connect(MONGO_DB_URL,{newUrlParser: true})
+  .then(result => {
+
+    // Listen on port 1000
+    const port = process.env.PORT || 1000;
+    app.listen(port,"0.0.0.0", () =>
+      console.log("Express app listening on port " + port)
+    );
+  })
+  .catch(err => {
+    console.log("Not connected to db: " + err);
+  });
+
+var db = mongoose.connection;
+
+// Handle mongo error checking
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", function() {
+  console.log("we are connected!");
+});
 
 // Parse incoming requests
 
@@ -79,7 +79,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({
-      mongooseConnection: server,
+      mongooseConnection: db,
     }),
   })
 );
