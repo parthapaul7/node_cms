@@ -50,7 +50,7 @@ mongoose
   .then(result => {
 
     // Listen on port 1000
-    const port = process.env.PORT || 1000;
+    const port = process.env.PORT || 3000;
     app.listen(port,"0.0.0.0", () =>
       console.log("Express app listening on port " + port)
     );
