@@ -5,10 +5,10 @@ const isAuth = require("../middleware/isAuth");
 const { body } = require("express-validator/check");
 
 // GET all posts
-router.get("/posts", postController.getPosts);
+router.get("/posts", isAuth, postController.getPosts);
 
 // GET post detail
-router.get("/posts/:postId", postController.getPostDetail);
+router.get("/posts/:postId",isAuth, postController.getPostDetail);
 
 // GET user posts
 router.get("/my-posts", isAuth,postController.getAuthorPost);

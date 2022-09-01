@@ -4,11 +4,11 @@
 		<div class="container">
 			<div class="row">
 				<div class="col">
-					<div class="mx-auto w-50 p-3 bg-dark text-white">
+					<div class="mx-auto w-50 p-3 bg-light ">
 						<h1><%= pageTitle %></h1>
 						<div class="add-post">
 							<div class="add-post-form">
-								<form action="/add-post" class="needs-validation" method="POST" enctype="multipart/form-data">
+								<form action="/add-post" class="needs-validation" method="POST" >
 									<div class="form-group">
 										<label for="title" class="form-check-label">Title</label>
 										<input type="text" name="title" class="form-control <% if (errFields.errTitle) { %>is-invalid<% } %>"  placeholder="Title" required="required" value="<%= oldInput.title %>">
@@ -23,7 +23,6 @@
 											<%= errFields.errDesc %>
 										</div>
 									</div>
-									<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 									<input class="btn btn-primary" type="submit" value="Add Post">
 								</form>
 							</div>

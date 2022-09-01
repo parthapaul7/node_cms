@@ -4,7 +4,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col">
-				<div class="mx-auto w-50 p-3 bg-dark text-white">
+				<div class="mx-auto w-50 p-3 bg-light ">
 					<h1><%= pageTitle %></h1>
 					<div class="row">
 						<div class="col-sm-6">
@@ -30,12 +30,10 @@
 									<div class="invalid-feedback" ><%= errFields.errPasswordConf %></div>
 								</div>
 								<input type="hidden" name="id" value="<%= profile.id %>">
-								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 								<input type="submit" class="btn btn-primary" value="Update User">
 							</form>
 							<form action="/profile-delete" method="post">
 								<input type="hidden" name="id" value="<%= profile.id %>">
-								<input type="hidden" name="_csrf" value="<%= csrfToken %>">
 								<input type="submit" class="btn btn-danger" value="Delete User">
 							</form>
 						</div>

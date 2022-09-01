@@ -1,6 +1,6 @@
 const Post = require("../models/post");
 const { validationResult } = require("express-validator/check");
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 50;
 let totalItems, page;
 
 exports.getPosts = async(req, res, next) => {
@@ -8,7 +8,8 @@ exports.getPosts = async(req, res, next) => {
       page = +req.query.page || 1;
     
     try {
-      const posts = Post.find().countDocuments();
+      const posts = await Post.find();
+      console.log(posts,"post count");
       const numProducts = await Post.find()
         .skip((page - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
@@ -36,37 +37,37 @@ exports.getPosts = async(req, res, next) => {
     }
 };
 
-exports.getPosts = async(req, res, next) => {
-  var message = req.flash("notification");
-      page = +req.query.page || 1;
-  try {
-    const numProducts = await Post.find().countDocuments();
-    const posts = await Post.find()
-        .skip((page - 1) * ITEMS_PER_PAGE)
-        .limit(ITEMS_PER_PAGE);
+// exports.getPosts = async(req, res, next) => {
+//   var message = req.flash("notification");
+//       page = +req.query.page || 1;
+//   try {
+//     const numProducts = await Post.find().countDocuments();
+//     const posts = await Post.find()
+//         .skip((page - 1) * ITEMS_PER_PAGE)
+//         .limit(ITEMS_PER_PAGE);
   
-    totalItems = numProducts;
+//     totalItems = numProducts;
   
-    res.render("post/post-list", {
-      pageTitle: "Post",
-      posts: posts,
-      errMessage: message.length > 0 ? message[0] : null,
-      itemsPerPage: ITEMS_PER_PAGE,
-      totalItems: totalItems,
-      currentPage: page,
-      hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-      hasPreviousPage: page > 1,
-      nextPage: page + 1,
-      previousPage: page - 1,
-      lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
-    });
-  } catch (err) {
-    const error = new Error(err);
-    error.httpStatusCode = 500;
-    return next(error);
-  }
+//     res.render("post/post-list", {
+//       pageTitle: "Post",
+//       posts: posts,
+//       errMessage: message.length > 0 ? message[0] : null,
+//       itemsPerPage: ITEMS_PER_PAGE,
+//       totalItems: totalItems,
+//       currentPage: page,
+//       hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+//       hasPreviousPage: page > 1,
+//       nextPage: page + 1,
+//       previousPage: page - 1,
+//       lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE)
+//     });
+//   } catch (err) {
+//     const error = new Error(err);
+//     error.httpStatusCode = 500;
+//     return next(error);
+//   }
 
-};
+// };
 
 exports.getPostDetail = async(req, res, next) => {
   var message = req.flash("notification");

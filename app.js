@@ -120,14 +120,6 @@ app.use((req, res, next) => {
     });
 });
 
-// Middleware for CSRF protection
-app.use(csrf());
-
-// Render Locals CSRF
-app.use((req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
-  next();
-});
 
 // Router module
 const registerRouter = require("./routes/register"),

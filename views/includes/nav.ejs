@@ -6,20 +6,24 @@
           <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
+          <!-- only show for admin users -->
           <a class="nav-link <%= isLogin ? 'd-block' : 'd-none' %>" href="/users">Users</a>
         </li>
 
         <li class="nav-item <%= isLogin ? 'd-block' : 'd-none' %>">
-          <a class="nav-link" href="/add-post">Add Posts</a>
+          <!-- <a class="nav-link" href="/add-post">Add Posts</a> -->
         </li>
         <li class="nav-item <%= isLogin ? 'd-none' : 'd-block' %>">
           <a class="nav-link" href="/posts">Posts</a>
         </li>
         <li class="nav-item <%= isLogin ? 'd-block' : 'd-none' %>">
-          <a class="nav-link" href="/my-posts">My Posts</a>
+          <a class="nav-link" href="/my-posts">Submissions</a>
         </li>
         <li class="nav-item <%= isLogin ? 'd-block' : 'd-none' %>">
-            <a class="nav-link" href="/account">Account</a>
+          <a class="nav-link" href="/my-posts">Registrations</a>
+        </li>
+        <li class="nav-item <%= isLogin ? 'd-block' : 'd-none' %>">
+            <!-- <a class="nav-link" href="/account">Account</a> -->
         </li>
         <li class="nav-item <%= isLogin ? 'd-none' : 'd-block' %>">
           <a class="nav-link" href="/login">Login</a>
