@@ -124,12 +124,14 @@ app.use((req, res, next) => {
 // Router module
 const registerRouter = require("./routes/register"),
   profileRouter = require("./routes/profile"),
-  postRouter = require("./routes/post");
+  postRouter = require("./routes/post"),
+  test = require("./routes/api/test");
 
 // Routes
 app.use(profileRouter);
 app.use(registerRouter);
 app.use(postRouter);
+app.use(test);
 
 // Catch 404 and forward to error handler
 var notFoundCtrl = require("./controller/error.js");
