@@ -9,7 +9,6 @@ exports.getPosts = async(req, res, next) => {
     
     try {
       const posts = await Post.find();
-      console.log(posts,"post count");
       const numProducts = await Post.find()
         .skip((page - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE);
@@ -72,7 +71,9 @@ exports.getPosts = async(req, res, next) => {
 exports.getPostDetail = async(req, res, next) => {
   var message = req.flash("notification");
   try {
+    console.log(req.params.postId, "post id");
     const post = await Post.findById(req.params.postId);
+    console.log(post, "post");
     res.render("post/post-detail", {
       pageTitle: post.title,
       post: post,
