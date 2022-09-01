@@ -72,7 +72,7 @@ exports.getPostDetail = async(req, res, next) => {
   var message = req.flash("notification");
   try {
     console.log(req.params.postId, "post id");
-    const post = await Post.findById(req.params.postId);
+    const post = (await Post.find({_id:req.params.postId}))[0];
     console.log(post, "post");
     res.render("post/post-detail", {
       pageTitle: post.title,
