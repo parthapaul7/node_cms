@@ -131,7 +131,7 @@ const registerRouter = require("./routes/register"),
 app.use(profileRouter);
 app.use(registerRouter);
 app.use(postRouter);
-app.use(test);
+app.use("/api",test);
 
 // Catch 404 and forward to error handler
 var notFoundCtrl = require("./controller/error.js");
