@@ -1,6 +1,9 @@
+const User = require('../models/user');
 
-module.exports = (req, res, next) => {
-  if (!req.session.userId) {
+module.exports= async (req, res, next) => {
+  const user = await User.findById(req.session.userId) 
+  console.log(user);
+  if (!user.isAdmin) {
     var err = new Error("Not authorized! Go back!");
     err.status = 400;
     return res.render("error", {
@@ -9,6 +12,5 @@ module.exports = (req, res, next) => {
       errMessage: err
     });
   }
-  next();
-};
-
+  return next();
+}

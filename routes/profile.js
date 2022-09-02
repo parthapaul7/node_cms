@@ -2,25 +2,27 @@ const express = require("express");
 const router = express.Router();
 const profileCtrl = require("../controller/profile.js");
 const isAuth = require("../middleware/isAuth");
+const  isAdmin = require("../middleware/isAdmin");
 const { body } = require("express-validator/check");
 const User = require("../models/user");
 
 // GET route after registering
-router.get("/users", isAuth, profileCtrl.getAllUsers);
+router.get("/users", isAuth,isAdmin, profileCtrl.getAllUsers);
 
 // GET route after registering
-router.get("/account", isAuth, profileCtrl.getAccount);
+router.get("/account", isAuth,isAdmin, profileCtrl.getAccount);
 
 // GET route PROFILE
-router.get("/user/:userId", isAuth, profileCtrl.getUser);
+router.get("/user/:userId", isAuth,isAdmin, profileCtrl.getUser);
 
 // GET route PROFILE EDIT PAGE
-router.get("/user/:userId/edit", isAuth, profileCtrl.getUserEdit);
+router.get("/user/:userId/edit", isAuth,isAdmin, profileCtrl.getUserEdit);
 
 // POST route PROFILE EDIT PAGE
 router.post(
   "/profile-edit",
   isAuth,
+  isAdmin,
   [
     body("email", "Invalid email")
       .isEmail()
@@ -45,6 +47,6 @@ router.post(
 );
 
 // DELETE route PROFILE EDIT PAGE
-router.delete("/user-delete/:userId", isAuth, profileCtrl.deleteUser);
+router.delete("/user-delete/:userId", isAuth,isAdmin, profileCtrl.deleteUser);
 
 module.exports = router;

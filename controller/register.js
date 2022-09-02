@@ -87,7 +87,8 @@ exports.postRegister = (req, res, next) => {
       passwordConf: passwordConf,
       loginAttempts: 1,
       lockUntil: 1,
-      userId: 1
+      userId: 1,
+      isAdmin: false,
     };
 
     User.create(userData, function(error, user) {
@@ -164,7 +165,7 @@ exports.postLogin = async(req, res, next) => {
         return next(err);
       } else {
         req.session.userId = user._id;
-        return res.redirect("/my-posts");
+        return res.redirect("/posts");
       }
     });
   

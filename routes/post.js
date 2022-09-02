@@ -11,15 +11,14 @@ router.get("/posts", isAuth, postController.getPosts);
 router.get("/posts/:postId",isAuth, postController.getPostDetail);
 
 // GET user posts
-router.get("/my-posts", isAuth,postController.getAuthorPost);
+// router.get("/my-posts", isAuth,postController.getAuthorPost);
 
 // GET add post page
-router.get("/add-post", isAuth, postController.getAddPost);
+// router.get("/add-post", isAuth, postController.getAddPost);
 
 // POST add post
 router.post(
   "/add-post",
-  isAuth,
   [
     body("title", "Enter valid title")
       .trim()
@@ -33,11 +32,11 @@ router.post(
   postController.postAddPost
 );
 
+// router.get("/posts/:postId/edit", isAuth, postController.getEditPost);
+
 // POST edit post
-router.get("/posts/:postId/edit", isAuth, postController.getEditPost);
 router.post(
-  "/post-edit",
-  isAuth,
+  "/post-edit/:postId",
   [
     body("title", "Enter valid title")
       .trim()
@@ -51,7 +50,5 @@ router.post(
   postController.postEditPost
 );
 
-// POST delete post
-router.delete("/posts/:postId/", isAuth, postController.deletePost);
 
 module.exports = router;

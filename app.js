@@ -46,7 +46,7 @@ const MONGO_DB_URL = "mongodb://127.0.0.1:27017/testDB";
 //   return db;
 // });
 mongoose
-  .connect(MONGO_DB_URL,{newUrlParser: true})
+  .connect(MONGO_DB_URL)
   .then(result => {
 
     // Listen on port 1000

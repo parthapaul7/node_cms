@@ -10,11 +10,13 @@ const postSchema = new Schema({
     type: String,
     required: true
   },
+  file:{
+    type: String,
+  },
   author: {
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true
     }
   }
 });

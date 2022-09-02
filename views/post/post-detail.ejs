@@ -1,21 +1,38 @@
 <%- include('../includes/header.ejs') %>
-<%- include('../includes/nav.ejs') %>
-<div class="container">
-	<div class="row">
-		<div class="col">
-			<div class="mx-auto w-80 px-4 py-2 bg-light ">
-				<h1><%= pageTitle %></h1>
-				<div class="post">
-						<% if(errMessage) { %>
-							<div><%= errMessage %></div>
-						<% } %>
-					<h3><%= post.title %></h3>
-					<div class="post-view">
-						<p id="post-description"><%= post.description %></p>
+	<%- include('../includes/nav.ejs') %>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="mx-auto w-80 px-4 py-2 bg-light ">
+						<h3 class="my-1 mx-3">
+							<!-- <%= pageTitle %> -->
+							ECN001
+						</h3>
+						<hr>
+						<div class="my-4 mx-3">
+							<% if(errMessage) { %>
+								<div>
+									<%= errMessage %>
+								</div>
+								<% } %>
+									<div class="row my-2">
+										<div class="col-4">Name</div>
+										<div class="col-8">
+											<%= post.title %>
+										</div>
+									</div>
+									<hr>
+									<div class="row my-2">
+										<div class="col-4"> Contact</div>
+										<div class="col-8">
+											<%= post.description %>
+										</div>
+									</div>
+									<hr>
+									<a target="_blank" href="<%= post.file%>" id="">Download file</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
-<%- include('../includes/footer.ejs') %>
+		<%- include('../includes/footer.ejs') %>
