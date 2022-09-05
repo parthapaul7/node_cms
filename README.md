@@ -18,12 +18,8 @@
 - Bcrypt
 - Error Handler
 
-## Setup
-1. `git clone https://github.com/simplifyjs/Node-JS-CMS-ejs-template`
-2. `npm install`
-3. `npm run start`
 
 
 ## Author
-* **Ann G.** ⊂(・﹏・⊂) [Simplify JS](http://simplifyjs.com)
+Partha Pratim Paul
 # node_cms
