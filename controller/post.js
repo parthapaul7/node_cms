@@ -55,22 +55,22 @@ exports.getPostDetail = async(req, res, next) => {
 
 };
 
-exports.getAddPost = (req, res, next) => {
-  let message = req.flash("notification");
+// exports.getAddPost = (req, res, next) => {
+//   let message = req.flash("notification");
 
-  return res.render("post/add-post", {
-    pageTitle: "Add Post",
-    oldInput: {
-      title: '',
-      description: ''
-    },
-    errMessage: message.length > 0 ? message[0] : null,
-    errFields: {
-      errTitle:  '',
-      errDesc: ''
-    }
-  });
-};
+//   return res.render("post/add-post", {
+//     pageTitle: "Add Post",
+//     oldInput: {
+//       title: '',
+//       description: ''
+//     },
+//     errMessage: message.length > 0 ? message[0] : null,
+//     errFields: {
+//       errTitle:  '',
+//       errDesc: ''
+//     }
+//   });
+// };
 
 exports.postAddPost = async(req, res, next) => {
   const author = req.session.userId,

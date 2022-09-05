@@ -4,7 +4,8 @@ const test = require("../../controller/api/test.js");
 
 const path = require("path");
 const multer = require("multer");
-const baseImgUrl = "http://localhost:3000/api/upload/";
+
+const baseImgUrl = process.env.BASE_IMG_URL;
 
 // GET route after registering
 router.get("/test", test.getData);

@@ -4,3 +4,4 @@ sendgrid.env
 .vscode/*
 .env
 uploads/
+asset_files/

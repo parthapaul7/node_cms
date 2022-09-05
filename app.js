@@ -9,6 +9,7 @@ const flash = require("connect-flash");
 const User = require("./models/user");
 const tunnel = require("tunnel-ssh");
 
+require("dotenv").config();
 // Express app
 const app = express();
 
@@ -125,13 +126,15 @@ app.use((req, res, next) => {
 const registerRouter = require("./routes/register"),
   profileRouter = require("./routes/profile"),
   postRouter = require("./routes/post"),
-  test = require("./routes/api/test");
+  test = require("./routes/api/test"),
+  assetFiles = require("./routes/api/assetFiles");
 
 // Routes
 app.use(profileRouter);
 app.use(registerRouter);
 app.use(postRouter);
 app.use("/api",test);
+app.use(assetFiles);
 
 // Catch 404 and forward to error handler
 var notFoundCtrl = require("./controller/error.js");
