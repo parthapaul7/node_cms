@@ -11,12 +11,14 @@ exports.getAssetFilesForm= (req, res, next) => {
     pageTitle: "Add files",
     oldInput: {
       file: '',
-      type: ''
+      type: '',
+      name: ''
     },
     errMessage: message.length > 0 ? message[0] : null,
     errFields: {
       errFile:  '',
-      errType: ''
+      errType: '',
+      errName: ''
     }
   })
 
@@ -38,7 +40,6 @@ const upload = multer({ storage: storage }).single("file");
 
 exports.postAssetFiles = async (req, res, next) => {
   let file,file_name;
-  console.log(req.body)
 
   upload(req, res, async function (err) {
     file = baseUrl+req.file.filename;
@@ -50,11 +51,13 @@ exports.postAssetFiles = async (req, res, next) => {
     }
 
 
-    const type = req.body.type;
+    const type = req.body.type,
+          name = req.body.name;
 
     console.log(file_name,type,file);
     const asset = new Asset({
       file_name: file_name ,
+      name: name,
       file: file,
       type: type || "image",
     });
@@ -63,6 +66,7 @@ exports.postAssetFiles = async (req, res, next) => {
         res.status(200).json({
           status: "success",
           messege: "file uploaded successfully",
+          name: name,
           file: file,
         });
     } catch (err) {
