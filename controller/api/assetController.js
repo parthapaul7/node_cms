@@ -76,3 +76,17 @@ exports.postAssetFiles = async (req, res, next) => {
     }
   }) 
 }
+
+exports.getAssetList = async (req, res, next) => {
+  try {
+    const assets = await Asset.find();
+    res.status(200).json({
+      status: "success",
+      data: assets,
+    });
+  } catch (err) {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  }
+}
