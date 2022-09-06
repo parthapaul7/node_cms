@@ -1,7 +1,8 @@
 const Asset = require("../../models/asset");
 const baseUrl= process.env.BASE_UPLOADS_URL;
 const path = require("path");
-const multer = require("multer")
+const multer = require("multer");
+const { errorMonitor } = require("events");
 
 exports.getAssetFilesForm= (req, res, next) => {
   let message = req.flash("notification");
@@ -12,13 +13,15 @@ exports.getAssetFilesForm= (req, res, next) => {
     oldInput: {
       file: '',
       type: '',
-      name: ''
+      name: '',
+      institution: '',
     },
     errMessage: message.length > 0 ? message[0] : null,
     errFields: {
       errFile:  '',
       errType: '',
-      errName: ''
+      errName: '',
+      errInsti: ''
     }
   })
 
@@ -52,14 +55,16 @@ exports.postAssetFiles = async (req, res, next) => {
 
 
     const type = req.body.type,
-          name = req.body.name;
+          name = req.body.name,
+          institution = req.body.institution;
 
     console.log(file_name,type,file);
     const asset = new Asset({
       file_name: file_name ,
       name: name,
       file: file,
-      type: type || "image",
+      type: type || "",
+      institution:  institution|| "",
     });
     try {
       await asset.save();
@@ -68,6 +73,7 @@ exports.postAssetFiles = async (req, res, next) => {
           messege: "file uploaded successfully",
           name: name,
           file: file,
+          institution: institution,
         });
     } catch (err) {
       const error = new Error(err);

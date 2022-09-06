@@ -10,6 +10,10 @@ const assetSchema = new Schema({
     type: String,
     required: true
     },
+  institution: {
+    type: String,
+    default: ''
+  },
   type: {
     type: String,
     required: true
