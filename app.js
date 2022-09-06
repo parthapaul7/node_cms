@@ -9,6 +9,10 @@ const flash = require("connect-flash");
 const User = require("./models/user");
 const tunnel = require("tunnel-ssh");
 
+// fix cors
+const cors = require("cors");
+
+
 require("dotenv").config();
 // Express app
 const app = express();
@@ -73,6 +77,8 @@ db.once("open", function() {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// use cors
+app.use(cors());
 // Use sessions for tracking logins
 app.use(
   session({
