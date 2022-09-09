@@ -136,11 +136,11 @@ const registerRouter = require("./routes/register"),
   assetFiles = require("./routes/api/assetFiles");
 
 // Routes
-app.use(profileRouter);
-app.use(registerRouter);
-app.use(postRouter);
-app.use("/api",test);
-app.use(assetFiles);
+app.use("/vibran",profileRouter);
+app.use("/vibran",registerRouter);
+app.use("/vibran",postRouter);
+app.use("/vibran/api",test);
+app.use("/vibran",assetFiles);
 
 // Catch 404 and forward to error handler
 var notFoundCtrl = require("./controller/error.js");
