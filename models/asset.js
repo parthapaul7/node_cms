@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const assetSchema = new Schema({
   file_name: {
@@ -23,5 +24,7 @@ const assetSchema = new Schema({
     type: String,
   },
 });
+
+assetSchema.plugin(AutoIncrement, {inc_field: 'index'});
 
 module.exports = mongoose.model('Asset', assetSchema);

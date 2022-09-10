@@ -58,7 +58,7 @@ exports.postAssetFiles = async (req, res, next) => {
           name = req.body.name,
           institution = req.body.institution;
 
-    console.log(file_name,type,file);
+    // console.log(file_name,type,file);
     const asset = new Asset({
       file_name: file_name ,
       name: name,
@@ -85,7 +85,8 @@ exports.postAssetFiles = async (req, res, next) => {
 
 exports.getAssetList = async (req, res, next) => {
   try {
-    const assets = await Asset.find();
+    const assets = await Asset.find({type: req.params.type}).sort({index: -1});
+    console.log(req.user.type , "and", assets);
     res.status(200).json({
       status: "success",
       data: assets,
