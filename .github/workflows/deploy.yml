@@ -1,0 +1,23 @@
+name: deployment
+
+on: 
+  push: 
+    branches: [main] 
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: deploy 
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        script: |
+          cd ~/app/node_cms/deployments
+          bash deploy.sh
+          
