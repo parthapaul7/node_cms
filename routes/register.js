@@ -6,7 +6,7 @@ const { body } = require("express-validator/check");
 const User = require("../models/user");
 
 // GET for front page
-router.get("/", registerCtrl.getFrontPage);
+// router.get("/", registerCtrl.getFrontPage);
 
 // GET route for reading data
 router.get("/register", registerCtrl.getRegister);

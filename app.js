@@ -133,9 +133,11 @@ const registerRouter = require("./routes/register"),
   profileRouter = require("./routes/profile"),
   postRouter = require("./routes/post"),
   test = require("./routes/api/test"),
-  assetFiles = require("./routes/api/assetFiles");
+  assetFiles = require("./routes/api/assetFiles"),
+  homeRouter = require("./routes/home");
 
 // Routes
+app.use("/",homeRouter);
 app.use("/",profileRouter);
 app.use("/",registerRouter);
 app.use("/",postRouter);

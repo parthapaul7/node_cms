@@ -1,4 +1,4 @@
-const Post = require("../models/post");
+const Post = require("../models/abstract");
 const ITEMS_PER_PAGE = 50;
 let totalItems, page;
 
@@ -72,19 +72,11 @@ exports.getPostDetail = async(req, res, next) => {
 //   });
 // };
 
-exports.postAddPost = async(req, res, next) => {
-  const author = req.session.userId,
-        title = req.body.title,
-        description = req.body.description,
-        file = req.body.file;
 
+exports.postAddPost = async(req, res, next) => {
+  
   const post = new Post({
-    title: title,
-    description: description,
-    file: file,
-    author: {
-      userId: author
-    }
+   ...req.body 
   });
 
   try {

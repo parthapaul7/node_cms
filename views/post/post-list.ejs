@@ -19,10 +19,10 @@
             <div class="post-item">
             <h3><%= post.email %></h3>
             <div class="row my-3">
-              <a class="col-2 text-secondary" href="/posts/<%= post.id %>">ENS001</a>
+              <a class="col-2 text-secondary" href="/abstract/<%= post.id %>">ENS001</a>
               <div class="col-4 text-secondary" ><%= post.title %></div>
               <div class="col-4 text-secondary"><%= post.title %></div>
-              <h6 style="width: 200px;" class="ml-auto col-2"><a href="/posts/<%= post.id %>" class="mr-auto">Details</a></h6>
+              <h6 style="width: 200px;" class="ml-auto col-2"><a href="/abstract/<%= post.id %>" class="mr-auto">Details</a></h6>
             </div>
             <!-- <a href="/posts/<%= post.id %>/edit" class="pl-3 <%= isLogin ? 'd-block' : 'd-none' %>" >Edit</a> -->
             <input type="hidden" name="id" value="<%= post._id %>">

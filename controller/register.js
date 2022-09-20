@@ -1,12 +1,6 @@
 const User = require("../models/user");
 const { validationResult } = require("express-validator/check");
 
-// GET route for reading data
-exports.getFrontPage = (req, res, next) => {
-  return res.render("index", {
-    pageTitle: "Front Page"
-  });
-};
 
 // GET route for registration
 exports.getRegister = (req, res, next) => {

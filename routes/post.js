@@ -5,10 +5,10 @@ const isAuth = require("../middleware/isAuth");
 const { body } = require("express-validator/check");
 
 // GET all posts
-router.get("/posts", isAuth, postController.getPosts);
+router.get("/abstract", isAuth, postController.getPosts);
 
 // GET post detail
-router.get("/posts/:postId",isAuth, postController.getPostDetail);
+router.get("/abstract/:postId", isAuth, postController.getPostDetail);
 
 // GET user posts
 // router.get("/my-posts", isAuth,postController.getAuthorPost);
@@ -17,20 +17,7 @@ router.get("/posts/:postId",isAuth, postController.getPostDetail);
 // router.get("/add-post", isAuth, postController.getAddPost);
 
 // POST add post
-router.post(
-  "/add-post",
-  [
-    body("title", "Enter valid title")
-      .trim()
-      .escape()
-      .not().isEmpty(),
-    body("description", "Enter valid description")
-      .trim()
-      .escape()
-      .not().isEmpty()
-  ],
-  postController.postAddPost
-);
+router.post("/add-post", postController.postAddPost);
 
 // router.get("/posts/:postId/edit", isAuth, postController.getEditPost);
 
@@ -38,17 +25,14 @@ router.post(
 router.post(
   "/post-edit/:postId",
   [
-    body("title", "Enter valid title")
-      .trim()
-      .escape()
-      .not().isEmpty(),
+    body("title", "Enter valid title").trim().escape().not().isEmpty(),
     body("description", "Enter valid description")
       .trim()
       .escape()
-      .not().isEmpty()
+      .not()
+      .isEmpty(),
   ],
   postController.postEditPost
 );
-
 
 module.exports = router;
