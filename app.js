@@ -131,7 +131,7 @@ app.use((req, res, next) => {
 // Router module
 const registerRouter = require("./routes/register"),
   profileRouter = require("./routes/profile"),
-  postRouter = require("./routes/post"),
+  abstractRouter = require("./routes/post"),
   test = require("./routes/api/test"),
   assetFiles = require("./routes/api/assetFiles"),
   homeRouter = require("./routes/home");
@@ -140,7 +140,7 @@ const registerRouter = require("./routes/register"),
 app.use("/",homeRouter);
 app.use("/",profileRouter);
 app.use("/",registerRouter);
-app.use("/",postRouter);
+app.use("/abstract",abstractRouter);
 app.use("/api",test);
 app.use("/",assetFiles);
 

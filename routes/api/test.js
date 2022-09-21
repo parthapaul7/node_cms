@@ -37,9 +37,9 @@ router.post("/upload", upload.single("file"), async function (req, res, next) {
 });
 
 // get uploaded files
-router.get("/upload/:id", async function (req, res, next) {
+router.get("/:folder/:id", async function (req, res, next) {
   const rootdir = path.join(__dirname, "../../");
-  res.sendFile(path.join(rootdir, "uploads", req.params.id));
+  res.sendFile(path.join(rootdir,req.params.folder, req.params.id));
 });
 
 module.exports = router;

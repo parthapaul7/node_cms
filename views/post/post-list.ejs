@@ -3,6 +3,7 @@
 	<div class="container">
     <div class="mx-auto w-80 px-4 py-2 bg-light ">
       <h2><%= pageTitle %></h2>
+      <h3 class="text-danger"><%= isAbsBlocked %></h3>
       <hr>
         <div class="row my-3">
               <h6 class="col-2 text-secondary" >Enrollment No.</h6>
@@ -19,7 +20,7 @@
             <div class="post-item">
             <h3><%= post.email %></h3>
             <div class="row my-3">
-              <a class="col-2 text-secondary" href="/abstract/<%= post.id %>">ENS001</a>
+              <a class="col-2 text-secondary" href="/abstract/<%= post.id %>"><%=post.abstractId %></a>
               <div class="col-4 text-secondary" ><%= post.title %></div>
               <div class="col-4 text-secondary"><%= post.title %></div>
               <h6 style="width: 200px;" class="ml-auto col-2"><a href="/abstract/<%= post.id %>" class="mr-auto">Details</a></h6>

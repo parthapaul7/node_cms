@@ -5,3 +5,4 @@ sendgrid.env
 .env
 uploads/
 asset_files/
+abstracts/

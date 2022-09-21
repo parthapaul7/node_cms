@@ -3,10 +3,15 @@ const Schema = mongoose.Schema;
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const abstractSchema = new Schema({
-  abstractId: {
+  field: {
     type: String,
     required: true,
+  },
+  abstractId: {
+    type: String,
     unique: true,
+    required: true,
+    default: "default",
   },
   title: {
     type: String,
@@ -21,23 +26,23 @@ const abstractSchema = new Schema({
     email: { type: String, required: true },
     phoneNo: { type: String, required: true },
   },
-  presAutor: {
+  presAuthor: {
     name: { type: String, required: true },
     email: { type: String, required: true },
-    phoneno: { type: String, required: true },
+    phoneNo: { type: String, required: true },
   },
 
-  affitiliation: {
+  affiliation: {
     type: String,
     required: true,
   },
 
-  file: {
+  fileName: {
     type: String,
     required: true,
   },
 });
 
-abstractSchema.plugin(AutoIncrement, { inc_field: "id" });
+abstractSchema.plugin(AutoIncrement, {id:"abstract", inc_field: "index" });
 
 module.exports = mongoose.model("Abstract", abstractSchema);
