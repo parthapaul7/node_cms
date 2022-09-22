@@ -42,9 +42,7 @@ exports.getPosts = async (req, res, next) => {
 exports.getPostDetail = async (req, res, next) => {
   var message = req.flash("notification");
   try {
-    console.log(req.params.postId, "post id");
     const post = (await Post.find({ _id: req.params.postId }))[0];
-    console.log(post, "post");
     res.render("post/post-detail", {
       pageTitle: post.title,
       post: post,
@@ -118,7 +116,6 @@ exports.postAddPost = (req, res, next) => {
         const abs = await Post.updateOne({_id:result._id}, {abstractId: absId });
         
         const response = (await Post.find({ _id: result._id }))[0];
-        console.log(response, "response");
         res
           .status(200)
           .json({ status: "success", message: "Post added", ...response._doc });
@@ -157,7 +154,6 @@ exports.postEditPost = async (req, res, next) => {
   if (!post)
     return res.status(404).json({ status: "error", message: "Post not found" });
 
-  console.log(post, "post");
   post.title = req.body.title;
   post.description = req.body.description;
   post.file = req.body.file;

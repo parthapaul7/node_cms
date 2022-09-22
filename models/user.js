@@ -29,6 +29,8 @@ var UserSchema = new mongoose.Schema({
   isAdmin: {
     type: Boolean, 
   },
+},{
+  timestamps: true
 });
 
   //authenticate input against database

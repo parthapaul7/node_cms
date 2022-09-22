@@ -16,6 +16,10 @@ router.post("/asset_files",isAuth,isAdmin, assetController.postAssetFiles);
 // get to asset-files
 router.get("/asset_files", isAuth,isAdmin,assetController.getAssetFilesForm);
 
+router.get("/edit/asset_files/:id",isAuth,isAdmin,assetController.getEditAssetFilesForm);
+// post edit post
+router.post("/edit_asset_files" ,isAuth,isAdmin,assetController.postEditAssetFiles);
+
 router.get("/asset_list/:type",assetController.getAssetList);
 // get uploaded files
 router.get("/api/asset_files/:id", async function (req, res, next) {

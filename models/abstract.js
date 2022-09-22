@@ -17,11 +17,15 @@ const abstractSchema = new Schema({
     type: String,
     required: true,
   },
-  authors: {
+  author: {
     type: String,
     required: true,
   },
-  commAuthor: {
+  coAuthors: {
+    type: String,
+    required: true,
+  },
+  corrAuthor: {
     name: { type: String, required: true },
     email: { type: String, required: true },
     phoneNo: { type: String, required: true },
@@ -41,7 +45,9 @@ const abstractSchema = new Schema({
     type: String,
     required: true,
   },
-});
+},{
+    timestamps: true
+} );
 
 abstractSchema.plugin(AutoIncrement, {id:"abstract", inc_field: "index" });
 

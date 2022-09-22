@@ -7,7 +7,6 @@ const { errorMonitor } = require("events");
 exports.getAssetFilesForm= (req, res, next) => {
   let message = req.flash("notification");
 
-  console.log("get asset files form");
   return res.render("content/asset_files", {
     pageTitle: "Add files",
     oldInput: {
@@ -49,7 +48,6 @@ exports.postAssetFiles = async (req, res, next) => {
     file_name = req.file.originalname;
 
     if(err){
-      console.log(err);
       res.status(500).json({ status: "error", ...err });
     }
 
@@ -95,4 +93,66 @@ exports.getAssetList = async (req, res, next) => {
     error.httpStatusCode = 500;
     return next(error);
   }
+}
+
+exports.getEditAssetFilesForm = async (req, res, next) => {
+  try {
+    const post = await Asset.findOne({
+      _id: req.params.id,
+    });
+    return res.render("content/edit_asset", {
+      pageTitle: "Edit Asset",
+      post: post,
+      errFields: {
+        errTitle: "",
+        errDesc: "",
+      },
+      oldInput:{
+        name: post.name,
+        type: post.type,
+        institution: post.institution,
+      }
+    });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+exports.postEditAssetFiles = async (req, res, next) => {
+  const name= req.body.name;
+  const type= req.body.type;
+  const id = req.body.id;
+
+  res.status(200).json({
+    status: "success",
+    messege: "file uploaded successfully",
+    name: name,
+    type: type,
+    id: id,
+  });
+  // if (!errors.isEmpty()) {
+  //   return res.status(422).render("content/edit_asset", {
+  //     pageTitle: "Edit Asset",
+  //     post: {
+  //       name,
+  //       type,
+  //       _id: id,
+  //     },
+  //     errFields: {
+  //       errTitle: errors.array()[0].msg,
+  //       errDesc: errors.array()[1].msg,
+  //     },
+  //   });
+  // }
+  // try {
+  //   const post = await Asset.findOne({
+  //     _id: id,
+  //   });
+  //   post.name= name;
+  //   post.type= type;
+  //   await post.save();
+  //   res.redirect("/asset_list");
+  // } catch (err) {
+  //   return next(err);
+  // }
 }

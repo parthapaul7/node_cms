@@ -13,7 +13,7 @@
 							<hr>
 							<% for(let items of advisory ) { %>
 								<div class="row">
-									<div class="col-4"><a href="/edit/<%=items.type %>">
+									<div class="col-4"><a href="/edit/asset_files/<%=items._id%>">
 											<%=items.name %>
 										</a></div>
 									<div class="col-4"><a target="_blank" href="<%=items.file %>"><%= items.file_name %></a></div>

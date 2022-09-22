@@ -4,34 +4,32 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongodb-session")(session);
-const csrf = require("csurf");
 const flash = require("connect-flash");
 const User = require("./models/user");
 const tunnel = require("tunnel-ssh");
-
-// fix cors
 const cors = require("cors");
-
-
 require("dotenv").config();
-// Express app
-const app = express();
 
-// const config = {
-//   username: "partha",
-//   host: "167.172.152.18",
-//   port: 22,
-//   dstPort: 27017,
-//   localHost: "127.0.0.1",
-//   password: "paulteli",
-// };
 
 const MONGO_DB_URL = "mongodb://127.0.0.1:27017/testDB";
 
-// Connect to MongoDB Atlas
-// const server = tunnel(config, function (error, server) {
-//   if (error) {
-//     console.log("SSH connection error: " + error);
+const app = express();
+// Express app
+
+// const config = {
+  //   username: "partha",
+  //   host: "167.172.152.18",
+  //   port: 22,
+  //   dstPort: 27017,
+  //   localHost: "127.0.0.1",
+  //   password: "paulteli",
+  // };
+  
+  
+  // Connect to MongoDB Atlas
+  // const server = tunnel(config, function (error, server) {
+    //   if (error) {
+      //     console.log("SSH connection error: " + error);
 //   }
 //   mongoose.connect("mongodb://localhost:27017/testDB");
 
@@ -50,6 +48,7 @@ const MONGO_DB_URL = "mongodb://127.0.0.1:27017/testDB";
 //   console.log("next");
 //   return db;
 // });
+
 mongoose
   .connect(MONGO_DB_URL)
   .then(result => {
