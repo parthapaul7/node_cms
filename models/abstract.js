@@ -7,6 +7,10 @@ const abstractSchema = new Schema({
     type: String,
     required: true,
   },
+  theme:{
+    type: String,
+    required: true,
+  },
   abstractId: {
     type: String,
     unique: true,
