@@ -90,12 +90,12 @@ exports.postRegister = (req, res, next) => {
         return next(error);
       } else {
         req.session.userId = user._id;
-        return res.redirect("/account");
+        return res.redirect("/");
       }
     });
   } else {
     req.flash("notification", "All fields required.");
-    res.redirect("/register");
+    res.redirect("/login");
   }
 };
 
@@ -159,7 +159,7 @@ exports.postLogin = async(req, res, next) => {
         return next(err);
       } else {
         req.session.userId = user._id;
-        return res.redirect("/posts");
+        return res.redirect("/");
       }
     });
   
@@ -172,7 +172,7 @@ exports.getLogout = (req, res, next) => {
       if (err) {
         return next(err);
       } else {
-        return res.redirect("/");
+        return res.redirect("/login");
       }
     });
 };

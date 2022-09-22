@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const { validationResult } = require("express-validator/check");
-const ITEMS_PER_PAGE = 50;
+const ITEMS_PER_PAGE = 10;
 let totalItems;
 
 // GET route after registering - Account page

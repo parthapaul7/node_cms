@@ -5,8 +5,7 @@
 				<div class="col">
 					<div class="mx-auto w-80 px-4 py-2 bg-light ">
 						<h3 class="my-1 mx-3">
-							<!-- <%= pageTitle %> -->
-							ECN001
+							<%= post.abstractId%>
 						</h3>
 						<hr>
 						<div class="my-4 mx-3">
@@ -15,21 +14,90 @@
 									<%= errMessage %>
 								</div>
 								<% } %>
+								<div class="row my-2">
+										<div class="col-4">Abstract Id</div>
+										<div class="col-8">
+											<%= post.abstractId%>
+										</div>
+									</div>
 									<div class="row my-2">
-										<div class="col-4">Name</div>
+										<div class="col-4">Topic</div>
+										<div class="col-8">
+											<%= post.field%>
+										</div>
+									</div>
+									<div class="row my-2">
+										<div class="col-4">Title</div>
 										<div class="col-8">
 											<%= post.title %>
 										</div>
 									</div>
-									<hr>
 									<div class="row my-2">
-										<div class="col-4"> Contact</div>
+										<div class="col-4">Authors</div>
 										<div class="col-8">
-											<%= post.description %>
+											<%= post.authors%>
 										</div>
 									</div>
+
 									<hr>
-									<a target="_blank" href="<%= post.file%>" id="">Download file</a>
+
+									<div class="row my-2">
+										<div class="col-4">Communicating Author</div>
+										<div class="col-8">
+											<%= post.commAuthor.name%>
+										</div>
+									</div>
+									<div class="row my-2">
+										<div class="col-4"></div>
+										<div class="col-8">
+											<%= post.commAuthor.email%>
+										</div>
+									</div>
+									<div class="row my-2">
+										<div class="col-4"></div>
+										<div class="col-8">
+											<%= post.commAuthor.phoneNo%>
+										</div>
+									</div>
+
+									<hr>
+
+									<div class="row my-2">
+										<div class="col-4">Presenting Author</div>
+										<div class="col-8">
+											<%= post.presAuthor.name%>
+										</div>
+									</div>
+									<div class="row my-2">
+										<div class="col-4"></div>
+										<div class="col-8">
+											<%= post.presAuthor.email%>
+										</div>
+									</div>
+									<div class="row my-2">
+										<div class="col-4"></div>
+										<div class="col-8">
+											<%= post.presAuthor.phoneNo%>
+										</div>
+									</div>
+
+									<hr>
+
+									<div class="row my-2">
+										<div class="col-4">affiliation</div>
+										<p class="col-8">
+											<%= post.title %>
+										</p>
+									</div>
+									<hr>
+									<div class="row my-2">
+										<div class="col-4"> File Location</div>
+										<p class="col-8">
+											<%= post.fileName%> 
+										</p>
+									</div>
+									<hr>
+									<a target="_blank" href="<%= post.fileName%>" id="">Download file</a>
 						</div>
 					</div>
 				</div>

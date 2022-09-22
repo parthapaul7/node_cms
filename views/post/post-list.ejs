@@ -6,9 +6,11 @@
       <h3 class="text-danger"><%= isAbsBlocked %></h3>
       <hr>
         <div class="row my-3">
-              <h6 class="col-2 text-secondary" >Enrollment No.</h6>
-              <h6 class="col-4 text-secondary" >Name</h6>
-              <h6 class="col-4 text-secondary">Name</h6>
+              <h6 class="col-2 text-secondary" >Abstract Id</h6>
+              <h6 class="col-2 text-secondary">Tilte</h6>
+              <h6 class="col-2 text-secondary" >Name</h6>
+              <h6 class="col-3 text-secondary">Email</h6>
+              <h6 class="col-2 text-secondary">Phone No</h6>
             </div>
             <hr>
       <div class="main my-4">
@@ -18,22 +20,22 @@
         <% if (posts.length > 0) { %>
           <% for(let post of posts) { %>
             <div class="post-item">
-            <h3><%= post.email %></h3>
             <div class="row my-3">
               <a class="col-2 text-secondary" href="/abstract/<%= post.id %>"><%=post.abstractId %></a>
-              <div class="col-4 text-secondary" ><%= post.title %></div>
-              <div class="col-4 text-secondary"><%= post.title %></div>
-              <h6 style="width: 200px;" class="ml-auto col-2"><a href="/abstract/<%= post.id %>" class="mr-auto">Details</a></h6>
+              <div class="col-2 text-secondary" ><%= post.title %></div>
+              <div class="col-2 text-secondary"><%= post.presAuthor.name%></div>
+              <div class="col-3 text-secondary"><%= post.presAuthor.email%></div>
+              <div class="col-2 text-secondary"><%= post.presAuthor.phoneNo%></div>
+              <h6  class="ml-auto col-1"><a href="/abstract/<%= post.id %>" class="mr-auto">Details</a></h6>
             </div>
-            <!-- <a href="/posts/<%= post.id %>/edit" class="pl-3 <%= isLogin ? 'd-block' : 'd-none' %>" >Edit</a> -->
             <input type="hidden" name="id" value="<%= post._id %>">
-            <hr>
           </div>
           <% } %>
           <%} else { %>
             <h2>No post found</h2>
             <% } %>
-          </div>
-        </div>
-        <%- include('../includes/pagination.ejs') %>
+      </div>
+    </div>
+</div>
+<%- include('../includes/pagination.ejs') %>
 <%- include('../includes/footer.ejs') %>

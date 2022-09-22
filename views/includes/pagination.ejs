@@ -1,19 +1,20 @@
 <% if(totalItems > itemsPerPage) { %>
-  <section id="pagination" class="mx-auto" style="width: fit-content; font-size:1.5rem;">
+  <section id="pagination" class="mx-auto  mb-4 bg-light px-5 rounded py-1" style="width: fit-content ">
+    <div class="mx-auto text-center text-secondary">Page No. <%= currentPage%></div>
     <% if(currentPage != 1) { %> 
-      <a class="first" href="?page=1">1</a>
+      <a class="btn btn-primary first" href="?page=1">1</a>
     <% } %>
-    <% if(hasPreviousPage) { %> 
-      <a class="previous" href="?page=<%= previousPage %>"><% previousPage %></a>
-      <span>......</span>
+    <% if(hasPreviousPage && previousPage != 1) { %> 
+      <a class="btn btn-primary previous" href="?page=<%= previousPage %>"><%= previousPage %></a>
+      <span>..</span>
     <% } %>
-    <a href="?page=<%= currentPage %>"><%= currentPage %></a>
+    <a class="btn btn-success" href="?page=<%= currentPage %>"><%= currentPage %></a>
     <% if(hasNextPage) { %>
-      <a class="next" href="?page=<%= nextPage %>"><%= nextPage %></a>
+      <a class="btn btn-primary next" href="?page=<%= nextPage %>"><%= nextPage %></a>
       <% } %>
       <% if(lastPage != currentPage && lastPage != nextPage) { %>
       <span>.......</span>
-      <a class="last" href="?page=<%= lastPage %>"><%= lastPage %></a>
+      <a class="btn btn-primary last" href="?page=<%= lastPage %>"><%= lastPage %></a>
     <% } %>
   </section>
 <% } %>

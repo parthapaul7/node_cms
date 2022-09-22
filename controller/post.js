@@ -1,5 +1,5 @@
 const Post = require("../models/abstract");
-const ITEMS_PER_PAGE = 50;
+const ITEMS_PER_PAGE = 10;
 let totalItems, page;
 const path = require("path");
 const multer = require("multer");
@@ -9,19 +9,18 @@ exports.getPosts = async (req, res, next) => {
   page = +req.query.page || 1;
 
   try {
-    const posts = await Post.find();
+    const postsLength = await Post.find({}).countDocuments();
     const isAbsBlocked = await Post.find({ abstractId: "default"});
 
-    console.log(posts, "posts");
     const numProducts = await Post.find()
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
 
-    totalItems = numProducts;
+    totalItems = postsLength;
 
     res.render("post/post-list", {
-      pageTitle: "Post",
-      posts: posts,
+      pageTitle: "Abstracts",
+      posts: numProducts,
       isAbsBlocked: isAbsBlocked.length > 0 ? "Abstract submission blocked": "",
       errMessage: message.length > 0 ? message[0] : null,
       itemsPerPage: ITEMS_PER_PAGE,
@@ -100,7 +99,7 @@ exports.postAddPost = (req, res, next) => {
       return res.status(500).json({ status: "error", message: "File size too large" });
     }
 
-    const file_link = process.env.BASE_FILE_URL_NEW + req.file.filename;
+    const file_link = process.env.BASE_FILE_URL_NEW + "abstracts/"+req.file.filename;
 
     const post = new Post({
       ...req.body,
@@ -111,7 +110,7 @@ exports.postAddPost = (req, res, next) => {
       const result = await post.save();
       if (result) {
         let formattedNumber = result.index.toLocaleString("en-US", {
-          minimumIntegerDigits: 3,
+          minimumIntegerDigits: 5,
           useGrouping: false,
         });
   

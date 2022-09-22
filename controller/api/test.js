@@ -1,4 +1,4 @@
-const ITEMS_PER_PAGE = 50;
+const ITEMS_PER_PAGE = 10;
 
 // GET route after registering - Account page
 exports.getData= async(req, res, next) => {

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const registerCtrl = require("../controller/register");
 const isAuth = require("../middleware/isAuth");
+const isAdmin = require("../middleware/isAdmin");
 const { body } = require("express-validator/check");
 const User = require("../models/user");
 
@@ -9,7 +10,7 @@ const User = require("../models/user");
 // router.get("/", registerCtrl.getFrontPage);
 
 // GET route for reading data
-router.get("/register", registerCtrl.getRegister);
+router.get("/register", isAuth, isAdmin, registerCtrl.getRegister);
 
 //POST route for signup/registration
 router.post(
@@ -50,6 +51,7 @@ router.post(
       })
       .escape()
   ],
+  isAuth,isAdmin,
   registerCtrl.postRegister
 );
 
