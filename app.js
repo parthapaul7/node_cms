@@ -74,7 +74,7 @@ db.once("open", function() {
 // Parse incoming requests
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false}));
 
 // use cors
 app.use(cors());
