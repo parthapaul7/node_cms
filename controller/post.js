@@ -1,5 +1,5 @@
 const Post = require("../models/abstract");
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 20;
 let totalItems, page;
 const path = require("path");
 const multer = require("multer");
@@ -9,18 +9,24 @@ exports.getPosts = async (req, res, next) => {
   page = +req.query.page || 1;
 
   try {
-    const postsLength = await Post.find({}).countDocuments();
-    const isAbsBlocked = await Post.find({ abstractId: "default"});
+  let postsLength,isAbsBlocked,products
+    if(!req.query.search){
+      postsLength = await Post.find({}).countDocuments();
+      isAbsBlocked = await Post.find({ abstractId: "default"});
+      products = await Post.find().sort({"corrAuthor.name": 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
+    }
+    else{
+      postsLength = await Post.find({$text:{$search:`\"${req.query.search}\"`}}).countDocuments();
+      isAbsBlocked = await Post.find({ abstractId: "default"});
+      products = await Post.find({$text:{$search:`\"${req.query.search}\"`}}).sort({"corrAuthor.name": 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
+    }
 
-    const numProducts = await Post.find()
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE);
-
+    console.log(products, "products", req.query.search);
     totalItems = postsLength;
 
     res.render("post/post-list", {
       pageTitle: "Abstracts",
-      posts: numProducts,
+      posts: products,
       isAbsBlocked: isAbsBlocked.length > 0 ? "Abstract submission blocked": "",
       errMessage: message.length > 0 ? message[0] : null,
       itemsPerPage: ITEMS_PER_PAGE,
@@ -31,6 +37,7 @@ exports.getPosts = async (req, res, next) => {
       nextPage: page + 1,
       previousPage: page - 1,
       lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+      search: req.query.search,
     });
   } catch (err) {
     const error = new Error(err);

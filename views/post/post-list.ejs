@@ -2,6 +2,12 @@
 <%- include('../includes/nav.ejs') %>
 	<div class="container">
     <div class="mx-auto w-80 px-4 py-2 bg-light ">
+      <div class="my-2 mb-4 ">
+        <form action="/abstract" method="get">
+        <input type="text" name="search" value="<%= search %>" placeholder="Search Abstract Ids, Authors" class="py-1" style="min-width: 400px; width: 50%;">
+        <input type="submit" value="Search" class="btn btn-primary">
+        </form>
+      </div>
       <h2><%= pageTitle %></h2>
       <h3 class="text-danger"><%= isAbsBlocked %></h3>
       <hr>
@@ -23,9 +29,9 @@
             <div class="row my-3">
               <a class="col-2 text-secondary" href="/abstract/<%= post.id %>"><%=post.abstractId %></a>
               <div class="col-2 text-secondary" ><%= post.title %></div>
-              <div class="col-2 text-secondary"><%= post.presAuthor.name%></div>
-              <div class="col-3 text-secondary"><%= post.presAuthor.email%></div>
-              <div class="col-2 text-secondary"><%= post.presAuthor.phoneNo%></div>
+              <div class="col-2 text-secondary"><%= post.corrAuthor.name%></div>
+              <div class="col-3 text-secondary"><%= post.corrAuthor.email%></div>
+              <div class="col-2 text-secondary"><%= post.corrAuthor.phoneNo%></div>
               <h6  class="ml-auto col-1"><a href="/abstract/<%= post.id %>" class="mr-auto">Details</a></h6>
             </div>
             <input type="hidden" name="id" value="<%= post._id %>">
