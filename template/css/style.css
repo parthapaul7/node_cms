@@ -3,4 +3,9 @@
 }
 .post-item{
     font-size: 15px;
+    margin: 1.35rem 0;
+}
+.hide-overflow{
+    overflow: hidden;
+    max-height: 3rem;
 }

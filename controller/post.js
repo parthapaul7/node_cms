@@ -13,15 +13,14 @@ exports.getPosts = async (req, res, next) => {
     if(!req.query.search){
       postsLength = await Post.find({}).countDocuments();
       isAbsBlocked = await Post.find({ abstractId: "default"});
-      products = await Post.find().sort({"corrAuthor.name": 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
+      products = await Post.find().sort({author: 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
     }
     else{
       postsLength = await Post.find({$text:{$search:`\"${req.query.search}\"`}}).countDocuments();
       isAbsBlocked = await Post.find({ abstractId: "default"});
-      products = await Post.find({$text:{$search:`\"${req.query.search}\"`}}).sort({"corrAuthor.name": 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
+      products = await Post.find({$text:{$search:`\"${req.query.search}\"`}}).sort({author: 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
     }
 
-    console.log(products, "products", req.query.search);
     totalItems = postsLength;
 
     res.render("post/post-list", {
