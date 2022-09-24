@@ -6,6 +6,12 @@
         <form action="/abstract" method="get">
         <input type="text" name="search" value="<%= search %>" placeholder="Search Abstract Ids, Authors" class="py-1" style="min-width: 400px; width: 50%;">
         <input type="submit" value="Search" class="btn btn-primary">
+        <span> | </span>
+        <% if(!isSortedByDate) { %>
+          <a href="/abstract?sortBy=createdAt" class="btn btn-success">Sort By Date</a>
+        <% } else { %>
+          <a href="/abstract?sortBy=author" class="btn btn-success">Sort By Alpahbet</a>
+        <% } %>
         </form>
       </div>
       <h2><%= pageTitle %></h2>

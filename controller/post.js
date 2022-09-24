@@ -7,18 +7,19 @@ const multer = require("multer");
 exports.getPosts = async (req, res, next) => {
   var message = req.flash("notification");
   page = +req.query.page || 1;
+  const sortBy = req.query.sortBy || "author";
 
   try {
   let postsLength,isAbsBlocked,products
     if(!req.query.search){
       postsLength = await Post.find({}).countDocuments();
       isAbsBlocked = await Post.find({ abstractId: "default"});
-      products = await Post.find().sort({author: 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
+      products = await Post.find().sort({[sortBy]: 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
     }
     else{
       postsLength = await Post.find({$text:{$search:`\"${req.query.search}\"`}}).countDocuments();
       isAbsBlocked = await Post.find({ abstractId: "default"});
-      products = await Post.find({$text:{$search:`\"${req.query.search}\"`}}).sort({author: 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
+      products = await Post.find({$text:{$search:`\"${req.query.search}\"`}}).sort({[sortBy]: 1}).skip((page - 1) * ITEMS_PER_PAGE).limit(ITEMS_PER_PAGE);
     }
 
     totalItems = postsLength;
@@ -37,6 +38,7 @@ exports.getPosts = async (req, res, next) => {
       previousPage: page - 1,
       lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
       search: req.query.search,
+      isSortedByDate: req.query.sortBy === "createdAt"? true: false,
     });
   } catch (err) {
     const error = new Error(err);
@@ -49,9 +51,13 @@ exports.getPostDetail = async (req, res, next) => {
   var message = req.flash("notification");
   try {
     const post = (await Post.find({ _id: req.params.postId }))[0];
+    const temp= new Date(post.createdAt);
+    const submissionDate = temp.toLocaleDateString()+" | "+temp.toLocaleTimeString();
+    console.log(submissionDate);
     res.render("post/post-detail", {
       pageTitle: post.title,
       post: post,
+      submissionDate,
       errMessage: message.length > 0 ? message[0] : null,
     });
   } catch (err) {
