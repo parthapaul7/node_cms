@@ -15,9 +15,9 @@ exports.getPosts = async (req, res, next) => {
       postsLength = await Post.find({}).countDocuments();
       isAbsBlocked = await Post.find({ abstractId: "default" });
       products = await Post.find()
-        .sort({ [sortBy]: 1 })
-        .skip((page - 1) * ITEMS_PER_PAGE)
-        .limit(ITEMS_PER_PAGE);
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE)
+      .sort({ [sortBy]: 1 });
     } else {
       postsLength = await Post.find({
         $text: { $search: `\"${req.query.search}\"` },
@@ -26,9 +26,9 @@ exports.getPosts = async (req, res, next) => {
       products = await Post.find({
         $text: { $search: `\"${req.query.search}\"` },
       })
-        .sort({ [sortBy]: 1 })
-        .skip((page - 1) * ITEMS_PER_PAGE)
-        .limit(ITEMS_PER_PAGE);
+      .sort({ [sortBy]: 1 })
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE)
     }
 
     totalItems = postsLength;
@@ -96,6 +96,7 @@ exports.getPostDetail = async (req, res, next) => {
 // };
 
 // upload files
+
 const storage = multer.diskStorage({
   destination: "abstracts/",
   filename: function (req, file, cb) {
@@ -106,7 +107,7 @@ const storage = multer.diskStorage({
         "_" +
         uniqueSuffix +
         "_" +
-        file.originalname.replace(/\s/g, "")
+        file.originalname.substring(file.originalname.length-10).replace(/\s/g, "")
     );
   },
 });
