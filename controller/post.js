@@ -123,9 +123,16 @@ exports.postAddPost = (req, res, next) => {
           minimumIntegerDigits: 5,
           useGrouping: false,
         });
-  
-        const absId = result.field + formattedNumber.toString();
-        const abs = await Post.updateOne({_id:result._id}, {abstractId: absId });
+        const field = result.theme.replace(/[^A-Z]/g, ''); 
+        const absId = field + formattedNumber.toString();
+
+        try{
+          const abs = await Post.updateOne({_id:result._id}, {abstractId: absId });
+        }
+        catch(err){
+          console.log(err);
+          res.json({ status: "error", message: "Error updating abstract id" });
+        }
         
         const response = (await Post.find({ _id: result._id }))[0];
         res

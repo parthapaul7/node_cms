@@ -3,10 +3,6 @@ const Schema = mongoose.Schema;
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const abstractSchema = new Schema({
-  field: {
-    type: String,
-    required: true,
-  },
   theme:{
     type: String,
     required: true,
