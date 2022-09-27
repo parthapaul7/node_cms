@@ -138,7 +138,6 @@ exports.postAddPost = (req, res, next) => {
 
     try {
       const result = await post.save();
-      res.json(result);
       if (result) {
         let formattedNumber = result.index.toLocaleString("en-US", {
           minimumIntegerDigits: 5,
@@ -150,19 +149,19 @@ exports.postAddPost = (req, res, next) => {
         try {
           await Post.updateOne({ _id: result._id }, { abstractId: absId });
           const response = (await Post.find({ _id: result._id }))[0];
-          res
+          return res
             .status(200)
             .json({ status: "success", message: "Post added", ...response._doc });
         } catch (error) {
-          res.status(500).json({ status: "error", message: error });
+          return res.status(500).json({ status: "error", message: error });
         }
 
       }
-      res
+      return res
         .status(400)
         .json({ status: "error", message: "something went wrong" });
     } catch (err) {
-      res
+      return res
         .status(500)
         .json({ status: "error", message: "Abstract not added", ...err });
     }

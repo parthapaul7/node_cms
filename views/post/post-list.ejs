@@ -19,10 +19,10 @@
       <hr>
         <div class="row my-3">
               <h6 class="col-2 text-secondary" >Abstract Id</h6>
-              <h6 class="col-2 text-secondary">Tilte</h6>
-              <h6 class="col-2 text-secondary" >Name</h6>
-              <h6 class="col-3 text-secondary">Email</h6>
-              <h6 class="col-2 text-secondary">Phone No</h6>
+              <h6 class="col-3 text-secondary">Tilte</h6>
+              <h6 class="col-1 text-secondary">File</h6>
+              <h6 class="col-3 text-secondary" >Authors</h6>
+              <h6 class="col-2 text-secondary">Email</h6>
             </div>
             <hr>
       <div class="main my-4">
@@ -34,10 +34,10 @@
             <div class="post-item">
             <div class="row">
               <a class="col-2 text-secondary" href="/abstract/<%= post.id %>"><%=post.abstractId %></a>
-              <div class="col-2 text-secondary hide-overflow" ><%= post.title %></div>
-              <div class="col-2 text-secondary hide-overflow"><%= post.author%></div>
-              <div class="col-3 text-secondary hide-overflow"><%= post.corrAuthor.email%></div>
-              <div class="col-2 text-secondary"><%= post.corrAuthor.phoneNo%></div>
+              <div class="col-3 text-secondary hide-overflow" ><%= post.title %></div>
+              <a class="col-1" href="<%= post.fileName%>">Download</a>
+              <div class="col-3 text-secondary hide-overflow"><%= post.author%></div>
+              <div class="col-2 text-secondary hide-overflow"><%= post.corrAuthor.email%></div>
               <h6  class="ml-auto col-1"><a href="/abstract/<%= post.id %>" class="mr-auto">Details</a></h6>
             </div>
             <input type="hidden" name="id" value="<%= post._id %>">
