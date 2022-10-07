@@ -16,17 +16,64 @@
 									<div class="col-4"><a href="/edit/asset_files/<%=items._id%>">
 											<%=items.name %>
 										</a></div>
-									<div class="col-4"><a target="_blank" href="<%=items.file %>"><%= items.file_name %></a></div>
-									<div class="col-4"><spna><%= items.email || items.institution %></spna></div>
+									<div class="col-4"><a target="_blank" href="<%=items.file %>">
+											<%= items.file_name %>
+										</a></div>
+									<div class="col-4">
+										<spna>
+											<%= items.email || items.institution %>
+										</spna>
+									</div>
 								</div>
 								<hr>
 								<% } %>
 						</div>
+						<% } %>
+				</div>
+
+				<div class="container bg-light my-3">
+					<% if(advisory.length> 0) { %>
+						<h2 class="my-4 mx-3">
+							Photo Gallery
+						</h2>
+						<div class="pb-4 my-4 mx-3">
+							<hr>
+							<% for(let items of photoGallery) { %>
+								<div class="row">
+									<div class="col-4"><a href="/edit/asset_files/<%=items._id%>">
+											<%=items.name %>
+										</a></div>
+									<div class="col-4"><a target="_blank" href="<%=items.file %>">
+											<%= items.file_name %>
+										</a></div>
+									<div class="col-4">
+										<spna>
+											<%= items.email || items.institution %>
+										</spna>
+									</div>
+								</div>
+								<hr>
+								<% } %>
+						</div>
+						<% } %>
+				</div>
+
+				<% if(timeline) { %>
+					<div class="container bg-light">
+						<h2 class="my-1 mx-3">Timeline</h2>
+						<div class="row mx-2 mt-4">
+							<div class="col-4"><a href="/edit/asset_files/<%=timeline._id%>">
+									Edit Image
+								</a></div>
+							<div class="col-4"><a target="_blank" href="<%=timeline.file %>">
+									<%=timeline.file_name %>
+								</a></div>
+							<div class="p-5 w-50">
+								<img class="w-100" src="<%=timeline.file %>" alt="">
+							</div>
+						</div>
+					</div>
 					<% } %>
-				</div>
-				<div class="container bg-light">
-					<h2 class="my- mx-3">Timeline</h2>
-				</div>
 			</div>
 		</div>
 		</div>

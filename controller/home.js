@@ -9,9 +9,13 @@ exports.getFrontPage = async (req, res, next) => {
   const assets = await Asset.find();
 
   const advisory = assets.filter((asset) => asset.type === "advisory");
+  const photoGallery = assets.filter((asset) => asset.type === "photo_gallery");
+  const timeline= assets.filter((asset) => asset.type === "timeline");
 
   return res.render("index", {
     pageTitle: "Front Page",
     advisory: advisory,
+    photoGallery: photoGallery,
+    timeline: timeline[0],
   });
 };
