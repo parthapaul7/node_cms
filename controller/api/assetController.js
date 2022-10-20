@@ -64,7 +64,7 @@ exports.postAssetFiles = async (req, res, next) => {
       try {
         extraFields = JSON.parse(req.body.extraFields);
       } catch (error) {
-        res.status(500).json({ status: "error", ...error });
+        return res.status(500).json({ status: "error", message: "Invalid JSON", ...error });
       }
     }
 
@@ -144,9 +144,18 @@ exports.postEditAssetFiles = (req, res, next) => {
       res.status(500).json({ status: "error", ...err });
     }
 
+    let extraFields
+    try {
+      extraFields = JSON.parse(req.body.extraFields);
+    }
+    catch (error) {
+      return res.status(500).json({ status: "error", message: "Invalid JSON", ...error });
+    }
+
     const data = {
       name: req.body.name,
       institution: req.body.institution,
+      extraFields: extraFields,
     };
 
     if (req.file) {
