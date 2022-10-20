@@ -37,6 +37,13 @@
 											<%= errFields.type%>
 										</div>
 									</div>
+									<div class="form-group">
+										<label for="type" class="form-check-label">Extra </label>
+										<pre class="extraFields"><textarea type="text" rows="4" name="extraFields" class="form-control" placeholder="optional , write sticktly in json"  value="<%= oldInput.extraFields %>"><%= oldInput.extraFields %></textarea></pre>
+										<div class="invalid-feedback">
+											<%= errFields.type%>
+										</div>
+									</div>
 									<input class="btn btn-primary" type="submit" value="Add file">
 								</form>
 							</div>

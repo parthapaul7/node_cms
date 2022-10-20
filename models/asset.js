@@ -23,8 +23,8 @@ const assetSchema = new Schema(
       required: true,
       type: String,
     },
-    field1: {
-      type: String,
+    extraFields: {
+      type: Object,
     },
   },
   {

@@ -57,6 +57,32 @@
 						</div>
 						<% } %>
 				</div>
+				<div class="container bg-light my-3 py-3">
+				<% if(invited.length> 0) { %>
+						<h2 class="my-4 mx-3">
+							Invited Speakers
+						</h2>
+						<div class="pb-4 my-4 mx-3">
+							<hr>
+							<% for(let items of invited) { %>
+								<div class="row">
+									<div class="col-4"><a href="/edit/asset_files/<%=items._id%>">
+											<%=items.name %>
+										</a></div>
+									<div class="col-4"><a target="_blank" href="<%=items.file %>">
+											<%= items.file_name %>
+										</a></div>
+									<div class="col-4">
+										<spna>
+											<%= items.email || items.institution %>
+										</spna>
+									</div>
+								</div>
+								<hr>
+								<% } %>
+						</div>
+						<% } %>
+				</div>
 
 				<% if(timeline) { %>
 					<div class="container bg-light">
