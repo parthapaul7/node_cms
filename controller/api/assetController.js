@@ -96,11 +96,20 @@ exports.postAssetFiles = async (req, res, next) => {
 
 exports.getAssetList = async (req, res, next) => {
   try {
-    const assets = await Asset.find({
+    let assets;
+    
+    if(req.params.type === "invited"){
+       assets = await Asset.find({
       type: req.params.type,
       ...req.query,
-    }).sort({ index: 1 });
-
+    }).sort({ name: 1 });
+    }
+    else{
+      assets = await Asset.find({
+        type: req.params.type,
+        ...req.query,
+      }).sort({ index: 1 });
+    }  
     res.status(200).json({
       status: "success",
       data: assets,
