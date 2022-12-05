@@ -1,10 +1,12 @@
 const Post = require("../models/abstract");
 const ITEMS_PER_PAGE = 20;
 let totalItems, page;
-const path = require("path");
 const multer = require("multer");
+const {getUrlPath} = require("../middleware/utils")
 
 exports.getPosts = async (req, res, next) => {
+
+  
   var message = req.flash("notification");
   page = +req.query.page || 1;
   const sortBy = req.query.sortBy || "author";
@@ -49,6 +51,7 @@ exports.getPosts = async (req, res, next) => {
       lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
       search: req.query.search,
       isSortedByDate: req.query.sortBy === "createdAt" ? true : false,
+      urlPath: getUrlPath(req),
     });
   } catch (err) {
     const error = new Error(err);
