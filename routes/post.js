@@ -18,6 +18,7 @@ router.get("/:postId", isAuth, postController.getPostDetail);
 
 // POST add post
 router.post("/", postController.postAddPost);
+router.post("/itemsPerPage", postController.postItemsPerPage);
 
 // router.get("/posts/:postId/edit", isAuth, postController.getEditPost);
 

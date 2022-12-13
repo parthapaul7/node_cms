@@ -172,6 +172,7 @@ exports.getLogout = (req, res, next) => {
       if (err) {
         return next(err);
       } else {
+        res.clearCookie("itemsPerPage");
         return res.redirect("/login");
       }
     });

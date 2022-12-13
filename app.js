@@ -6,48 +6,14 @@ const session = require("express-session");
 const MongoStore = require("connect-mongodb-session")(session);
 const flash = require("connect-flash");
 const User = require("./models/user");
-const tunnel = require("tunnel-ssh");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 
 const MONGO_DB_URL = "mongodb://127.0.0.1:27017/testDB";
 
 const app = express();
-// Express app
-
-// const config = {
-  //   username: "partha",
-  //   host: "167.172.152.18",
-  //   port: 22,
-  //   dstPort: 27017,
-  //   localHost: "127.0.0.1",
-  //   password: "paulteli",
-  // };
-  
-  
-  // Connect to MongoDB Atlas
-  // const server = tunnel(config, function (error, server) {
-    //   if (error) {
-      //     console.log("SSH connection error: " + error);
-//   }
-//   mongoose.connect("mongodb://localhost:27017/testDB");
-
-//   var db = mongoose.connection;
-//   db.on("error", console.error.bind(console, "DB connection error:"));
-
-//   db.once("open", function () {
-//     // we're connected!
-//     console.log("DB connection successful");
-//     const port = process.env.PORT || 1000;
-//     app.listen(port, () =>
-//       console.log("Express app listening on port " + port)
-//     );
-//     // console.log(db);
-//   });
-//   console.log("next");
-//   return db;
-// });
 
 mongoose
   .connect(MONGO_DB_URL)
@@ -78,6 +44,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 // use cors
 app.use(cors());
+app.use(cookieParser())
 // Use sessions for tracking logins
 app.use(
   session({

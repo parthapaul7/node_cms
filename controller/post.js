@@ -1,12 +1,14 @@
 const Post = require("../models/abstract");
-const ITEMS_PER_PAGE = 20;
+// let ITEMS_PER_PAGE = 20;
 let totalItems, page;
 const multer = require("multer");
 const {getUrlPath} = require("../middleware/utils")
 
 exports.getPosts = async (req, res, next) => {
 
-  
+  const ITEMS_PER_PAGE = req.cookies.itemsPerPage || 20;
+  console.log(req.cookies)
+
   var message = req.flash("notification");
   page = +req.query.page || 1;
   const sortBy = req.query.sortBy || "author";
@@ -60,6 +62,16 @@ exports.getPosts = async (req, res, next) => {
   }
 };
 
+exports.postItemsPerPage= async (req, res, next) => {
+  const temp= new Number(req.body.itemsPerPage);
+  if(temp<1){
+    return res.redirect("/abstract");
+  }
+
+  res.cookie("itemsPerPage", temp, { maxAge: 24*3600000});
+  return res.redirect("/abstract");
+}
+
 exports.getPostDetail = async (req, res, next) => {
   var message = req.flash("notification");
   try {
@@ -73,6 +85,7 @@ exports.getPostDetail = async (req, res, next) => {
       post: post,
       submissionDate,
       errMessage: message.length > 0 ? message[0] : null,
+      isVerified: false,
     });
   } catch (err) {
     const error = new Error(err);
@@ -81,24 +94,8 @@ exports.getPostDetail = async (req, res, next) => {
   }
 };
 
-// exports.getAddPost = (req, res, next) => {
-//   let message = req.flash("notification");
 
-//   return res.render("post/add-post", {
-//     pageTitle: "Add Post",
-//     oldInput: {
-//       title: '',
-//       description: ''
-//     },
-//     errMessage: message.length > 0 ? message[0] : null,
-//     errFields: {
-//       errTitle:  '',
-//       errDesc: ''
-//     }
-//   });
-// };
 
-// upload files
 
 const storage = multer.diskStorage({
   destination: "abstracts/",
@@ -217,39 +214,39 @@ exports.postEditPost = async (req, res, next) => {
 };
 
 //////////////////// for author stuff ////////////////////////
-exports.getAuthorPost = async (req, res, next) => {
-  if (!req.session.userId) {
-    var error = new Error("Access Denied");
-    error.status = 402;
-    next(error);
-  }
+// exports.getAuthorPost = async (req, res, next) => {
+//   if (!req.session.userId) {
+//     var error = new Error("Access Denied");
+//     error.status = 402;
+//     next(error);
+//   }
 
-  var message = req.flash("notification");
-  page = +req.query.page || 1;
+//   var message = req.flash("notification");
+//   page = +req.query.page || 1;
 
-  try {
-    const postCount = await Post.find().countDocuments();
-    const posts = await Post.find({ author: { userId: req.session.userId } })
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE);
+//   try {
+//     const postCount = await Post.find().countDocuments();
+//     const posts = await Post.find({ author: { userId: req.session.userId } })
+//       .skip((page - 1) * ITEMS_PER_PAGE)
+//       .limit(ITEMS_PER_PAGE);
 
-    totalItems = postCount;
-    return res.render("post/post-list", {
-      pageTitle: "Post",
-      posts: posts,
-      errMessage: message.length > 0 ? message[0] : null,
-      totalItems: totalItems,
-      itemsPerPage: ITEMS_PER_PAGE,
-      currentPage: page,
-      hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-      hasPreviousPage: page > 1,
-      nextPage: page + 1,
-      previousPage: page - 1,
-      lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
-    });
-  } catch (err) {
-    const error = new Error(err);
-    error.httpStatusCode = 500;
-    return next(error);
-  }
-};
+//     totalItems = postCount;
+//     return res.render("post/post-list", {
+//       pageTitle: "Post",
+//       posts: posts,
+//       errMessage: message.length > 0 ? message[0] : null,
+//       totalItems: totalItems,
+//       itemsPerPage: ITEMS_PER_PAGE,
+//       currentPage: page,
+//       hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+//       hasPreviousPage: page > 1,
+//       nextPage: page + 1,
+//       previousPage: page - 1,
+//       lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+//     });
+//   } catch (err) {
+//     const error = new Error(err);
+//     error.httpStatusCode = 500;
+//     return next(error);
+//   }
+// };
