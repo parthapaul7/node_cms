@@ -86,6 +86,7 @@ exports.getPostDetail = async (req, res, next) => {
       submissionDate,
       errMessage: message.length > 0 ? message[0] : null,
       isVerified: false,
+      verifiedBy: []
     });
   } catch (err) {
     const error = new Error(err);
@@ -188,13 +189,16 @@ exports.getEditPost = async (req, res, next) => {
 };
 
 exports.postEditPost = async (req, res, next) => {
+  console.log(req.params.postId, req.user)
   const post = await Post.findOne({ _id: req.params.postId });
-  if (!post)
-    return res.status(404).json({ status: "error", message: "Post not found" });
 
-  post.title = req.body.title;
-  post.description = req.body.description;
-  post.file = req.body.file;
+  if (!post){
+    return res.status(404).json({ status: "error", message: "Post not found" });
+  }
+
+  // post.title = req.body.title;
+  // post.description = req.body.description;
+  // post.file = req.body.file;
 
   try {
     const result = await post.save();

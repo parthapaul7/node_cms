@@ -128,25 +128,25 @@
 									<hr>
 									<div class="row my-2">
 										<div class="col-4">Verified By</div>
+										<% for( let i = 0; i < verifiedBy.length; i++ ) { %>
 										<p class="col-8">
-											<%= submissionDate%>
-										</p>
+												<%= verifiedBy[i].name%>
+												</p>
+										<% } %>
 									</div>
 									<hr>
-									<h6>Verify Yourself ( to verify the abstract just click on verify abstract button)</h6>
-									<div class="row my-5">
-										<div class="col-4">
-										<div class="form-check form-check-inline">
-											<input type="checkbox" class="btn-check" id="btn-check-2" autocomplete="off" name="isVerified">
-											<label class="form-check-label" for="inlineCheckbox1"><% if (isVerified)  { %> <span>Verified</span> <% } else { %> <span> Not Verified </span> <% } %></label>
+									<h6>To verify click the accept verify checkbox and hit Verify abstract</h6>
+									<form class="mx-auto my-2" method="post" action="">
+										<div class=" my-4 form-check form-check-inline mx-auto">
+											<input type="checkbox" class="btn-check" id="btn-check-2" autocomplete="off" name="isAccepted" >
+											<label class="form-check-label" for="inlineCheckbox1">&nbsp; Accept to verify Abstract</label>
 										</div>
-										</div>
-										<div class="col-4">
-											<label class="btn btn-success" for="btn-check-2">Verify Abstract</label>
+										<div class="">
+											<button class="btn mx-auto btn-success" >Verify Abstract</button>
 										</div>
 
 
-									</div>
+									</form>
 						</div>
 					</div>
 				</div>
