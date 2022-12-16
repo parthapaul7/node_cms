@@ -191,6 +191,7 @@ exports.getEditPost = async (req, res, next) => {
 exports.postEditPost = async (req, res, next) => {
   console.log(req.params.postId, req.user)
   const post = await Post.findOne({ _id: req.params.postId });
+   
 
   if (!post){
     return res.status(404).json({ status: "error", message: "Post not found" });
