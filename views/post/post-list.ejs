@@ -38,8 +38,9 @@
               <a class="col-1" href="<%= post.fileName%>">Download</a>
               <div class="col-2 text-secondary hide-overflow"><%= post.author%></div>
               <div class="col-1">
-                <input type="checkbox" class="btn-check" id="btn-check" checked disabled>
-                <input type="checkbox" class="btn-check" id="btn-check" checked disabled>
+                <% for( let i = 0; i < post.verifiedBy.length; i++ ) { %>
+                  ✔️
+                <% } %>
               </div>
               <div class="col-2 text-secondary hide-overflow"><%= post.corrAuthor.email%></div>
               <h6  class="ml-auto col-1"><a href="/abstract/<%= post.id %>" class="mr-auto">Details</a></h6>

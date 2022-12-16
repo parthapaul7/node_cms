@@ -5,7 +5,10 @@
 				<div class="col">
 					<div class="mx-auto w-80 px-4 py-2 bg-light mb-5 ">
 						<h3 class="my-1 mx-3">
-							<%= post.abstractId%>
+							<%= post.abstractId%>️
+							<% if (isVerified) { %>
+								✔️
+							<% } %>
 						</h3>
 						<hr>
 						<div class="my-4 mx-3">
@@ -127,18 +130,20 @@
 									<h4> Verify Abstract</h4>
 									<hr>
 									<div class="row my-2">
-										<div class="col-4">Verified By</div>
+										<div class="col-4">Verified By</div> 
 										<% for( let i = 0; i < verifiedBy.length; i++ ) { %>
-										<p class="col-8">
-												<%= verifiedBy[i].name%>
-												</p>
+											<div class="col-3 bg-white" >
+												<h6><%= verifiedBy[i].username%></h6>
+											</div>
 										<% } %>
 									</div>
 									<hr>
 									<h6>To verify click the accept verify checkbox and hit Verify abstract</h6>
 									<form class="mx-auto my-2" method="post" action="">
 										<div class=" my-4 form-check form-check-inline mx-auto">
-											<input type="checkbox" class="btn-check" id="btn-check-2" autocomplete="off" name="isAccepted" >
+											<input type="checkbox" class="btn-check" id="btn-check-2" autocomplete="off" name="isAccepted" <% if (false) { %>
+											 checked 
+											<% } %> >
 											<label class="form-check-label" for="inlineCheckbox1">&nbsp; Accept to verify Abstract</label>
 										</div>
 										<div class="">
