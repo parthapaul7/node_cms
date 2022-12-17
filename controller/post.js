@@ -6,7 +6,6 @@ const { getUrlPath } = require("../middleware/utils");
 
 exports.getPosts = async (req, res, next) => {
   const ITEMS_PER_PAGE = req.cookies.itemsPerPage || 20;
-  console.log(req.cookies);
 
   var message = req.flash("notification");
   page = +req.query.page || 1;
