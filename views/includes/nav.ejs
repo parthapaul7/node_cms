@@ -20,22 +20,19 @@
           <a class="nav-link" href="/posts">Registrations</a>
         </li>
         <li class="nav-item <%= isLogin ? 'd-block' : 'd-none' %>">
-            <!-- <a class="nav-link" href="/account">Account</a> -->
-        </li>
-        <li class="nav-item <%= isLogin ? 'd-none' : 'd-block' %>">
-          <a class="nav-link" href="/login">Login</a>
-        </li>
-        <li class="nav-item <%= isLogin ? 'd-block' : 'd-none' %>">
-          <a class="nav-link" href="/logout">Logout</a>
-        </li>
-        <li class="nav-item <%= isLogin ? 'd-none' : 'd-block' %>">
-          <a class="nav-link" href="/register">Register</a>
+            <a class="nav-link" href="/account">Account</a>
         </li>
         <li class="nav-item">
           <!-- only show for admin users -->
-          <a class="nav-link <%= isLogin ? 'd-block' : 'd-none' %>" href="/users">Users</a>
+          <a class="nav-link <%= isLogin && isAdminUser ? 'd-block' : 'd-none' %>" href="/users">Users</a>
         </li>
       </ul>
+      <div class="nav-item ml-auto mr-2 ">
+        <%= userName %>
+      </div>
+      <div class="nav-item mx-2<%= isLogin ? 'd-blok' : 'd-none' %>">
+        <a class="nav-link" href="/logout">Logout</a>
+      </div>
     </div>
   </div>
 </nav>

@@ -86,6 +86,8 @@ app.use((req, res, next) => {
         return next();
       }
       req.user = user;
+      res.locals.userName = req?.user?.username || "";
+      res.locals.isAdminUser = req?.user?.isAdmin || false;
       next();
     })
     .catch((err) => {

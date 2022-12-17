@@ -10,7 +10,7 @@ const User = require("../models/user");
 router.get("/users", isAuth,isAdmin, profileCtrl.getAllUsers);
 
 // GET route after registering
-router.get("/account", isAuth,isAdmin, profileCtrl.getAccount);
+router.get("/account", isAuth, profileCtrl.getAccount);
 
 // GET route PROFILE
 router.get("/user/:userId", isAuth,isAdmin, profileCtrl.getUser);
@@ -22,31 +22,17 @@ router.get("/user/:userId/edit", isAuth,isAdmin, profileCtrl.getUserEdit);
 router.post(
   "/profile-edit",
   isAuth,
-  isAdmin,
   [
     body("email", "Invalid email")
       .isEmail()
       .not().isEmpty().withMessage("Required"),
     body("username")
-      .not().isEmpty().withMessage("Required"),
-    body("newpassword")
-      .not().isEmpty().withMessage("Required"),
-    body("newpasswordConf", "Password confirmation does not match password")
-      .custom((value, {req}) => {
-        User.find()
-        if (req.body.newpassword){
-          if(value !== req.body.newpassword){
-            return false;
-          }
-          return true;
-        }
-      })
       .not().isEmpty().withMessage("Required")
   ],
   profileCtrl.postUserEdit
 );
 
 // DELETE route PROFILE EDIT PAGE
-router.delete("/user-delete/:userId", isAuth,isAdmin, profileCtrl.deleteUser);
+// router.delete("/user-delete/:userId", isAuth,isAdmin, profileCtrl.deleteUser);
 
 module.exports = router;

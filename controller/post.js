@@ -5,11 +5,11 @@ const multer = require("multer");
 const { getUrlPath } = require("../middleware/utils");
 
 exports.getPosts = async (req, res, next) => {
-  const ITEMS_PER_PAGE = req.cookies.itemsPerPage || 20;
+  const ITEMS_PER_PAGE = req.cookies?.itemsPerPage || 20;
 
   var message = req.flash("notification");
   page = +req.query.page || 1;
-  const sortBy = req.query.sortBy || "author";
+  const sortBy = req.cookies?.sortBy || "author";
 
   try {
     let postsLength, isAbsBlocked, products;
@@ -69,6 +69,14 @@ exports.postItemsPerPage = async (req, res, next) => {
   res.cookie("itemsPerPage", temp, { maxAge: 24 * 3600000 });
   return res.redirect("/abstract");
 };
+
+exports.postSortBy= async (req, res, next) => {
+  const temp = req.body.sortBy;
+
+  res.cookie("sortBy", temp, { maxAge: 24 * 3600000 });
+  return res.redirect("/abstract");
+}
+
 
 exports.getPostDetail = async (req, res, next) => {
   var message = req.flash("notification");

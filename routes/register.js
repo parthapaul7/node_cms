@@ -51,7 +51,6 @@ router.post(
       })
       .escape()
   ],
-  isAuth,isAdmin,
   registerCtrl.postRegister
 );
 

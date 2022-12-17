@@ -21,12 +21,12 @@
 								</div>
 								<div class="form-group">
 									<label for="password" class="form-check-label">Password</label>
-									<input type="password" name="newpassword" class="form-control <% if (errFields.errPassword) { %>is-invalid<% } %>"  required="required">
+									<input type="password" name="newpassword" class="form-control <% if (errFields.errPassword) { %>is-invalid<% } %>" >
 									<div class="invalid-feedback" ><%= errFields.errPassword %></div>
 								</div>
 								<div class="form-group">
 									<label for="password" class="form-check-label">Confirm Password</label>
-									<input type="password" name="newpasswordConf" class="form-control <% if (errFields.errPasswordConf) { %>is-invalid<% } %>"  required="required" >
+									<input type="password" name="newpasswordConf" class="form-control <% if (errFields.errPasswordConf) { %>is-invalid<% } %>" >
 									<div class="invalid-feedback" ><%= errFields.errPasswordConf %></div>
 								</div>
 								<input type="hidden" name="id" value="<%= profile.id %>">

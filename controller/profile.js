@@ -1,15 +1,9 @@
 const User = require("../models/user");
 const { validationResult } = require("express-validator/check");
-const ITEMS_PER_PAGE = 10;
 let totalItems;
 
 // GET route after registering - Account page
 exports.getAccount = async(req, res, next) => {
-  if (!req.session.userId) {
-    const error = new Error("Access denied");
-    error.httpStatusCode = 402;
-    next(error);
-  }
   try{
     const user = await User.findById(req.session.userId)
     if(!user) return;
@@ -30,13 +24,15 @@ exports.getAccount = async(req, res, next) => {
 
 // GET All User Profile
 exports.getAllUsers = async(req, res, next) => {
+  const ITEMS_PER_PAGE = req.cookies.itemsPerPage || 20;
+
   let page = +req.query.page || 1;
   let message = req.flash("notification");
 
   try{
     const userCount = await User.find({}).countDocuments();
     totalItems = userCount;
-  
+    
     const users = await User.find({})
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
@@ -119,7 +115,6 @@ exports.getUserEdit = async(req, res, next) => {
 
 // POST route PROFILE EDIT PAGE (OWN profile)
 exports.postUserEdit = async(req, res, next) => {
-  if (!req.session.userId) return next(error);
 
   let newEmail = req.body.email,
     newUserName = req.body.username,
@@ -178,14 +173,18 @@ exports.postUserEdit = async(req, res, next) => {
   if(newEmail) userUpdate.email = newEmail;
   if(newUserName) userUpdate.username = newUserName;
   if (newPassword === newPasswordConf) {
-    userUpdate.cd = newPassword;
-    userUpdate.passwordConf = newPasswordConf;
+    userUpdate.password = newPassword;
   }
+
   try{
     const user = await User.findByIdAndUpdate(req.session.userId, {$set: userUpdate})
+
     if (!user) return next(new Error("User does not exist"));
     req.flash("notification", `${newUserName} is now updated`);
-    res.redirect("/users");
+    return res.render("includes/alert",{
+      pageTitle: "User Updated",
+      error: "Updated Successfully",
+    });
 
   } catch(err) {
       const error = new Error(err);
