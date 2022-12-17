@@ -75,11 +75,9 @@ exports.getPostDetail = async (req, res, next) => {
   var message = req.flash("notification");
   try {
     const post = await Post.findOne({ _id: req.params.postId }).populate('verifiedBy');
-    console.log(post)
     const temp = new Date(post.createdAt);
     const submissionDate =
       temp.toLocaleDateString() + " | " + temp.toLocaleTimeString();
-    console.log(submissionDate);
     res.render("post/post-detail", {
       pageTitle: post.title,
       post: post,
