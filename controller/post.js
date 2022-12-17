@@ -5,11 +5,13 @@ const multer = require("multer");
 const { getUrlPath } = require("../middleware/utils");
 
 exports.getPosts = async (req, res, next) => {
-  const ITEMS_PER_PAGE = req.cookies?.itemsPerPage || 20;
-
+  const tempPage = Number(req.cookies.itemsPerPage);
+  const ITEMS_PER_PAGE = tempPage || 20;
+  
   var message = req.flash("notification");
   page = +req.query.page || 1;
   const sortBy = req.cookies?.sortBy || "author";
+  console.log(sortBy, "sortBy")
 
   try {
     let postsLength, isAbsBlocked, products;
@@ -28,9 +30,9 @@ exports.getPosts = async (req, res, next) => {
       products = await Post.find({
         $text: { $search: `\"${req.query.search}\"` },
       })
-        .sort({ [sortBy]: 1 })
-        .skip((page - 1) * ITEMS_PER_PAGE)
-        .limit(ITEMS_PER_PAGE);
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE)
+      .sort({ [sortBy]: 1 })
     }
 
     totalItems = postsLength;
@@ -50,7 +52,7 @@ exports.getPosts = async (req, res, next) => {
       previousPage: page - 1,
       lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
       search: req.query.search,
-      isSortedByDate: req.query.sortBy === "createdAt" ? true : false,
+      isSortedByDate: sortBy === "createdAt" ? true : false,
       urlPath: getUrlPath(req),
     });
   } catch (err) {
@@ -71,7 +73,13 @@ exports.postItemsPerPage = async (req, res, next) => {
 };
 
 exports.postSortBy= async (req, res, next) => {
-  const temp = req.body.sortBy;
+  let temp ;
+  if(req.body.sortBy === "Sort By Date"){
+    temp = "createdAt"
+  }
+  if(req.body.sortBy === "Sort By Author"){
+    temp = "author"
+  }
 
   res.cookie("sortBy", temp, { maxAge: 24 * 3600000 });
   return res.redirect("/abstract");

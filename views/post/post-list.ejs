@@ -8,9 +8,10 @@
         <input type="submit" value="Search" class="btn btn-primary">
         <span> | </span>
         <% if(!isSortedByDate) { %>
-          <a href="?sortBy=createdAt<%= urlPath %>" class="btn btn-success">Sort By Date</a>
+          <input type="submit" class="btn btn-success" name="sortBy" value="Sort By Date">
         <% } else { %>
-          <a href="?sortBy=author<%= urlPath %>" class="btn btn-success">Sort By Alpahbet</a>
+          <!-- <input type="submit" class="btn btn-success" name="sortBy" value="author"> -->
+          <input type="submit" class="btn btn-success" name="sortBy" value="Sort By Author">
         <% } %>
         </form>
       </div>
