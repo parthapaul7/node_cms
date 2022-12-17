@@ -19,6 +19,28 @@
       <% } %>
       <% if(lastPage != currentPage) { %>
       <a class="btn btn-primary last" href="?page=<%= lastPage %>"><%= lastPage %></a>
+      <% } %>
+    </section> 
     <% } %>
-  </section>
-<% } %>
+    <div class="container">
+    <div class="row">
+      <div class="col-8">
+
+      </div>
+    <div class="col-2">
+     Items Per page
+    </div>
+    <section class="col-2 mb-4 bg-light  rounded py-1">
+    <form action="/abstract/itemsPerPage" method="POST" >
+      <select onchange="this.form.submit()" name="itemsPerPage" >
+        <option value="20" hidden disabled selected><%= itemsPerPage %></option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50</option>
+      </select>
+      <!-- <input  name="itemsPerPage" class="px-2 w-80" style="width: 90%;" value="<%= itemsPerPage%>" > -->
+    </form></section>
+  </div>
+</div>

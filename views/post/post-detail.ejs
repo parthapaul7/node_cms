@@ -5,7 +5,10 @@
 				<div class="col">
 					<div class="mx-auto w-80 px-4 py-2 bg-light mb-5 ">
 						<h3 class="my-1 mx-3">
-							<%= post.abstractId%>
+							<%= post.abstractId%>️
+							<% if (isVerified) { %>
+								✔️
+							<% } %>
 						</h3>
 						<hr>
 						<div class="my-4 mx-3">
@@ -14,13 +17,13 @@
 									<%= errMessage %>
 								</div>
 								<% } %>
-								<div class="row my-2">
-									<div class="col-4">Sl No.</div>
-									<p class="col-8">
-										<%= post.index%> 
-									</p>
-								</div>
-								<div class="row my-2">
+									<div class="row my-2">
+										<div class="col-4">Sl No.</div>
+										<p class="col-8">
+											<%= post.index%>
+										</p>
+									</div>
+									<div class="row my-2">
 										<div class="col-4">Abstract Id</div>
 										<div class="col-8">
 											<%= post.abstractId%>
@@ -111,17 +114,44 @@
 									<div class="row my-2">
 										<div class="col-4"> File Location</div>
 										<p class="col-8">
-											<%= post.fileName%> 
+											<%= post.fileName%>
 										</p>
 									</div>
 									<div class="row my-2">
 										<div class="col-4">Time of Submission </div>
 										<p class="col-8">
-										<%= submissionDate%>
+											<%= submissionDate%>
 										</p>
 									</div>
 									<hr>
 									<a target="_blank" href="<%= post.fileName%>" id="">Download file</a>
+									<hr>
+									<div class="row py-3"></div>
+									<h4> Verify Abstract</h4>
+									<hr>
+									<div class="row my-2">
+										<div class="col-4">Verified By</div> 
+										<% for( let i = 0; i < post.verifiedBy.length; i++ ) { %>
+											<div class="col-3 bg-white" >
+												<h6><%= post.verifiedBy[i].username%></h6>
+											</div>
+										<% } %>
+									</div>
+									<hr>
+									<h6>To verify click the accept verify checkbox and hit Verify abstract</h6>
+									<form class="mx-auto my-2" method="post" action="">
+										<div class=" my-4 form-check form-check-inline mx-auto">
+											<input type="checkbox" class="btn-check" id="btn-check-2" autocomplete="off" name="isAccepted" <% if (false) { %>
+											 checked 
+											<% } %> >
+											<label class="form-check-label" for="inlineCheckbox1">&nbsp; Accept to verify Abstract</label>
+										</div>
+										<div class="">
+											<button class="btn mx-auto btn-success" >Verify Abstract</button>
+										</div>
+
+
+									</form>
 						</div>
 					</div>
 				</div>

@@ -1,12 +1,12 @@
 const Post = require("../models/abstract");
-const ITEMS_PER_PAGE = 20;
+// let ITEMS_PER_PAGE = 20;
 let totalItems, page;
 const multer = require("multer");
-const {getUrlPath} = require("../middleware/utils")
+const { getUrlPath } = require("../middleware/utils");
 
 exports.getPosts = async (req, res, next) => {
+  const ITEMS_PER_PAGE = req.cookies.itemsPerPage || 20;
 
-  
   var message = req.flash("notification");
   page = +req.query.page || 1;
   const sortBy = req.query.sortBy || "author";
@@ -17,9 +17,9 @@ exports.getPosts = async (req, res, next) => {
       postsLength = await Post.find({}).countDocuments();
       isAbsBlocked = await Post.find({ abstractId: "default" });
       products = await Post.find()
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE)
-      .sort({ [sortBy]: 1 });
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE)
+        .sort({ [sortBy]: 1 });
     } else {
       postsLength = await Post.find({
         $text: { $search: `\"${req.query.search}\"` },
@@ -28,9 +28,9 @@ exports.getPosts = async (req, res, next) => {
       products = await Post.find({
         $text: { $search: `\"${req.query.search}\"` },
       })
-      .sort({ [sortBy]: 1 })
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE)
+        .sort({ [sortBy]: 1 })
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
     }
 
     totalItems = postsLength;
@@ -60,19 +60,30 @@ exports.getPosts = async (req, res, next) => {
   }
 };
 
+exports.postItemsPerPage = async (req, res, next) => {
+  const temp = new Number(req.body.itemsPerPage);
+  if (temp < 1) {
+    return res.redirect("/abstract");
+  }
+
+  res.cookie("itemsPerPage", temp, { maxAge: 24 * 3600000 });
+  return res.redirect("/abstract");
+};
+
 exports.getPostDetail = async (req, res, next) => {
   var message = req.flash("notification");
   try {
-    const post = (await Post.find({ _id: req.params.postId }))[0];
+    const post = await Post.findOne({ _id: req.params.postId }).populate('verifiedBy');
     const temp = new Date(post.createdAt);
     const submissionDate =
       temp.toLocaleDateString() + " | " + temp.toLocaleTimeString();
-    console.log(submissionDate);
     res.render("post/post-detail", {
       pageTitle: post.title,
       post: post,
       submissionDate,
       errMessage: message.length > 0 ? message[0] : null,
+      isVerified: false,
+      verifiedBy: [],
     });
   } catch (err) {
     const error = new Error(err);
@@ -80,25 +91,6 @@ exports.getPostDetail = async (req, res, next) => {
     return next(error);
   }
 };
-
-// exports.getAddPost = (req, res, next) => {
-//   let message = req.flash("notification");
-
-//   return res.render("post/add-post", {
-//     pageTitle: "Add Post",
-//     oldInput: {
-//       title: '',
-//       description: ''
-//     },
-//     errMessage: message.length > 0 ? message[0] : null,
-//     errFields: {
-//       errTitle:  '',
-//       errDesc: ''
-//     }
-//   });
-// };
-
-// upload files
 
 const storage = multer.diskStorage({
   destination: "abstracts/",
@@ -110,7 +102,9 @@ const storage = multer.diskStorage({
         "_" +
         uniqueSuffix +
         "_" +
-        file.originalname.substring(file.originalname.length-10).replace(/\s/g, "")
+        file.originalname
+          .substring(file.originalname.length - 10)
+          .replace(/\s/g, "")
     );
   },
 });
@@ -152,13 +146,14 @@ exports.postAddPost = (req, res, next) => {
         try {
           await Post.updateOne({ _id: result._id }, { abstractId: absId });
           const response = (await Post.find({ _id: result._id }))[0];
-          return res
-            .status(200)
-            .json({ status: "success", message: "Post added", ...response._doc });
+          return res.status(200).json({
+            status: "success",
+            message: "Post added",
+            ...response._doc,
+          });
         } catch (error) {
           return res.status(500).json({ status: "error", message: error });
         }
-
       }
       return res
         .status(400)
@@ -191,65 +186,94 @@ exports.getEditPost = async (req, res, next) => {
 };
 
 exports.postEditPost = async (req, res, next) => {
-  const post = await Post.findOne({ _id: req.params.postId });
-  if (!post)
-    return res.status(404).json({ status: "error", message: "Post not found" });
+  // console.log(req.params.postId, req.user);
 
-  post.title = req.body.title;
-  post.description = req.body.description;
-  post.file = req.body.file;
+  if(req.body.isAccepted !== "on"){
+    return res.render("includes/alert", {
+      pageTitle: "Alert",
+      error: "Please check the accept verification checkbox",
+    });
+  }
 
   try {
-    const result = await post.save();
-    if (result) {
-      // req.flash("notification", result.title + " edited successfully");
-      // res.redirect("/posts/" + req.body.postId);
-      res
-        .status(200)
-        .json({ status: "success", message: "Post updated", ...result._doc });
+    const post = await Post.findOne({ _id: req.params.postId });
+    if (post.verifiedBy.length >= 2) {
+      return res.render("includes/alert", {
+        pageTitle: "Alert",
+        error: "This abstract has been verified by two reviewers",
+      });
+    }
+    if (post.verifiedBy.includes(req.user._id)) {
+      return res.render("includes/alert", {
+        pageTitle: "Alert",
+        error: "You have already verified this abstract",
+      });
+    }
+  } catch (error) {
+    return res.render("includes/alert", {
+      pageTitle: "Alert",
+      error: "Something went wrong",
+    });
+  }
+
+  // post.title = req.body.title;
+  // post.description = req.body.description;
+  // post.file = req.body.file;
+
+  try {
+    const updated = await Post.updateOne(
+      { _id: req.params.postId },
+      { $push: { verifiedBy: req.user._id } }
+    );
+    if (updated) {
+      return res.render("includes/alert", {
+        pageTitle: "Alert",
+        error: "Abstract verified successfully ✔️",
+      });
     }
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .json({ status: "error", message: "Post not updated", ...err });
+    return res.render("includes/alert", {
+      pageTitle: "Alert",
+      error: "Something went wrong",
+    });
   }
 };
 
 //////////////////// for author stuff ////////////////////////
-exports.getAuthorPost = async (req, res, next) => {
-  if (!req.session.userId) {
-    var error = new Error("Access Denied");
-    error.status = 402;
-    next(error);
-  }
+// exports.getAuthorPost = async (req, res, next) => {
+//   if (!req.session.userId) {
+//     var error = new Error("Access Denied");
+//     error.status = 402;
+//     next(error);
+//   }
 
-  var message = req.flash("notification");
-  page = +req.query.page || 1;
+//   var message = req.flash("notification");
+//   page = +req.query.page || 1;
 
-  try {
-    const postCount = await Post.find().countDocuments();
-    const posts = await Post.find({ author: { userId: req.session.userId } })
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE);
+//   try {
+//     const postCount = await Post.find().countDocuments();
+//     const posts = await Post.find({ author: { userId: req.session.userId } })
+//       .skip((page - 1) * ITEMS_PER_PAGE)
+//       .limit(ITEMS_PER_PAGE);
 
-    totalItems = postCount;
-    return res.render("post/post-list", {
-      pageTitle: "Post",
-      posts: posts,
-      errMessage: message.length > 0 ? message[0] : null,
-      totalItems: totalItems,
-      itemsPerPage: ITEMS_PER_PAGE,
-      currentPage: page,
-      hasNextPage: ITEMS_PER_PAGE * page < totalItems,
-      hasPreviousPage: page > 1,
-      nextPage: page + 1,
-      previousPage: page - 1,
-      lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
-    });
-  } catch (err) {
-    const error = new Error(err);
-    error.httpStatusCode = 500;
-    return next(error);
-  }
-};
+//     totalItems = postCount;
+//     return res.render("post/post-list", {
+//       pageTitle: "Post",
+//       posts: posts,
+//       errMessage: message.length > 0 ? message[0] : null,
+//       totalItems: totalItems,
+//       itemsPerPage: ITEMS_PER_PAGE,
+//       currentPage: page,
+//       hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+//       hasPreviousPage: page > 1,
+//       nextPage: page + 1,
+//       previousPage: page - 1,
+//       lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+//     });
+//   } catch (err) {
+//     const error = new Error(err);
+//     error.httpStatusCode = 500;
+//     return next(error);
+//   }
+// };

@@ -18,21 +18,11 @@ router.get("/:postId", isAuth, postController.getPostDetail);
 
 // POST add post
 router.post("/", postController.postAddPost);
+router.post("/itemsPerPage", postController.postItemsPerPage);
 
 // router.get("/posts/:postId/edit", isAuth, postController.getEditPost);
 
 // POST edit post
-router.post(
-  "/:postId",
-  [
-    body("title", "Enter valid title").trim().escape().not().isEmpty(),
-    body("description", "Enter valid description")
-      .trim()
-      .escape()
-      .not()
-      .isEmpty(),
-  ],
-  postController.postEditPost
-);
+router.post("/:postId",isAuth, postController.postEditPost);
 
 module.exports = router;

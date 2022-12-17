@@ -46,6 +46,17 @@ const abstractSchema = new Schema({
     type: String,
     required: true,
   },
+  isVerified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  verifiedBy: [{
+    type:mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  }],
+
+
 },{
     timestamps: true
 } );
