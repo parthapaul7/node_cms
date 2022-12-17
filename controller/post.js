@@ -2,12 +2,11 @@ const Post = require("../models/abstract");
 // let ITEMS_PER_PAGE = 20;
 let totalItems, page;
 const multer = require("multer");
-const {getUrlPath} = require("../middleware/utils")
+const { getUrlPath } = require("../middleware/utils");
 
 exports.getPosts = async (req, res, next) => {
-
   const ITEMS_PER_PAGE = req.cookies.itemsPerPage || 20;
-  console.log(req.cookies)
+  console.log(req.cookies);
 
   var message = req.flash("notification");
   page = +req.query.page || 1;
@@ -19,9 +18,9 @@ exports.getPosts = async (req, res, next) => {
       postsLength = await Post.find({}).countDocuments();
       isAbsBlocked = await Post.find({ abstractId: "default" });
       products = await Post.find()
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE)
-      .sort({ [sortBy]: 1 });
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE)
+        .sort({ [sortBy]: 1 });
     } else {
       postsLength = await Post.find({
         $text: { $search: `\"${req.query.search}\"` },
@@ -30,9 +29,9 @@ exports.getPosts = async (req, res, next) => {
       products = await Post.find({
         $text: { $search: `\"${req.query.search}\"` },
       })
-      .sort({ [sortBy]: 1 })
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE)
+        .sort({ [sortBy]: 1 })
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE);
     }
 
     totalItems = postsLength;
@@ -62,20 +61,21 @@ exports.getPosts = async (req, res, next) => {
   }
 };
 
-exports.postItemsPerPage= async (req, res, next) => {
-  const temp= new Number(req.body.itemsPerPage);
-  if(temp<1){
+exports.postItemsPerPage = async (req, res, next) => {
+  const temp = new Number(req.body.itemsPerPage);
+  if (temp < 1) {
     return res.redirect("/abstract");
   }
 
-  res.cookie("itemsPerPage", temp, { maxAge: 24*3600000});
+  res.cookie("itemsPerPage", temp, { maxAge: 24 * 3600000 });
   return res.redirect("/abstract");
-}
+};
 
 exports.getPostDetail = async (req, res, next) => {
   var message = req.flash("notification");
   try {
-    const post = (await Post.find({ _id: req.params.postId }))[0];
+    const post = await Post.findOne({ _id: req.params.postId }).populate('verifiedBy');
+    console.log(post)
     const temp = new Date(post.createdAt);
     const submissionDate =
       temp.toLocaleDateString() + " | " + temp.toLocaleTimeString();
@@ -86,7 +86,7 @@ exports.getPostDetail = async (req, res, next) => {
       submissionDate,
       errMessage: message.length > 0 ? message[0] : null,
       isVerified: false,
-      verifiedBy: []
+      verifiedBy: [],
     });
   } catch (err) {
     const error = new Error(err);
@@ -94,9 +94,6 @@ exports.getPostDetail = async (req, res, next) => {
     return next(error);
   }
 };
-
-
-
 
 const storage = multer.diskStorage({
   destination: "abstracts/",
@@ -108,7 +105,9 @@ const storage = multer.diskStorage({
         "_" +
         uniqueSuffix +
         "_" +
-        file.originalname.substring(file.originalname.length-10).replace(/\s/g, "")
+        file.originalname
+          .substring(file.originalname.length - 10)
+          .replace(/\s/g, "")
     );
   },
 });
@@ -150,13 +149,14 @@ exports.postAddPost = (req, res, next) => {
         try {
           await Post.updateOne({ _id: result._id }, { abstractId: absId });
           const response = (await Post.find({ _id: result._id }))[0];
-          return res
-            .status(200)
-            .json({ status: "success", message: "Post added", ...response._doc });
+          return res.status(200).json({
+            status: "success",
+            message: "Post added",
+            ...response._doc,
+          });
         } catch (error) {
           return res.status(500).json({ status: "error", message: error });
         }
-
       }
       return res
         .status(400)
@@ -189,12 +189,34 @@ exports.getEditPost = async (req, res, next) => {
 };
 
 exports.postEditPost = async (req, res, next) => {
-  console.log(req.params.postId, req.user)
-  const post = await Post.findOne({ _id: req.params.postId });
-   
+  // console.log(req.params.postId, req.user);
 
-  if (!post){
-    return res.status(404).json({ status: "error", message: "Post not found" });
+  if(req.body.isAccepted !== "on"){
+    return res.render("includes/alert", {
+      pageTitle: "Alert",
+      error: "Please check the accept verification checkbox",
+    });
+  }
+
+  try {
+    const post = await Post.findOne({ _id: req.params.postId });
+    if (post.verifiedBy.length >= 2) {
+      return res.render("includes/alert", {
+        pageTitle: "Alert",
+        error: "This abstract has been verified by two reviewers",
+      });
+    }
+    if (post.verifiedBy.includes(req.user._id)) {
+      return res.render("includes/alert", {
+        pageTitle: "Alert",
+        error: "You have already verified this abstract",
+      });
+    }
+  } catch (error) {
+    return res.render("includes/alert", {
+      pageTitle: "Alert",
+      error: "Something went wrong",
+    });
   }
 
   // post.title = req.body.title;
@@ -202,19 +224,22 @@ exports.postEditPost = async (req, res, next) => {
   // post.file = req.body.file;
 
   try {
-    const result = await post.save();
-    if (result) {
-      // req.flash("notification", result.title + " edited successfully");
-      // res.redirect("/posts/" + req.body.postId);
-      res
-        .status(200)
-        .json({ status: "success", message: "Post updated", ...result._doc });
+    const updated = await Post.updateOne(
+      { _id: req.params.postId },
+      { $push: { verifiedBy: req.user._id } }
+    );
+    if (updated) {
+      return res.render("includes/alert", {
+        pageTitle: "Alert",
+        error: "Abstract verified successfully ✔️",
+      });
     }
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .json({ status: "error", message: "Post not updated", ...err });
+    return res.render("includes/alert", {
+      pageTitle: "Alert",
+      error: "Something went wrong",
+    });
   }
 };
 

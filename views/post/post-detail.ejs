@@ -131,9 +131,9 @@
 									<hr>
 									<div class="row my-2">
 										<div class="col-4">Verified By</div> 
-										<% for( let i = 0; i < verifiedBy.length; i++ ) { %>
+										<% for( let i = 0; i < post.verifiedBy.length; i++ ) { %>
 											<div class="col-3 bg-white" >
-												<h6><%= verifiedBy[i].username%></h6>
+												<h6><%= post.verifiedBy[i].username%></h6>
 											</div>
 										<% } %>
 									</div>
