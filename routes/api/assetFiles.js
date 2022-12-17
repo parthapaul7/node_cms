@@ -9,8 +9,6 @@ const isAdmin = require("../../middleware/isAdmin");
 // GET route after registering
 
 
-
-
 router.post("/asset_files",isAuth,isAdmin, assetController.postAssetFiles);
 
 // get to asset-files

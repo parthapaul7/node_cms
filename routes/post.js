@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const postController = require("../controller/post");
 const isAuth = require("../middleware/isAuth");
-const { body } = require("express-validator/check");
 
 // GET all posts
 router.get("/", isAuth, postController.getPosts);

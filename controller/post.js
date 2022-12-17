@@ -1,5 +1,4 @@
 const Post = require("../models/abstract");
-// let ITEMS_PER_PAGE = 20;
 let totalItems, page;
 const multer = require("multer");
 const { getUrlPath } = require("../middleware/utils");
