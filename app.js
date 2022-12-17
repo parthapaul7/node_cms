@@ -60,6 +60,8 @@ app.use(
 // Session isLogin
 app.use((req, res, next) => {
   res.locals.isLogin = req.session.userId != undefined;
+      res.locals.userName = "";
+      res.locals.userName = "";
   next();
 });
 
