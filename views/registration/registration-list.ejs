@@ -25,10 +25,10 @@
                 <hr>
                 <div class="row my-3">
                     <h6 class="col-1 text-secondary">Sl No</h6>
-                    <h6 class="col-2 text-secondary">Abstract Id</h6>
+                    <h6 class="col-2 text-secondary">Position</h6>
                     <h6 class="col-2 text-secondary">File</h6>
                     <h6 class="col-2 text-secondary">Name</h6>
-                    <h6 class="col-3 text-secondary">Email</h6>
+                    <h6 class="col-3 text-secondary">Ref No.</h6>
                     <h7 class="col-2 text-secondary">More Info</h7>
                 </div>
                 <hr>
@@ -45,17 +45,17 @@
                                             <%=post.index%>
                                         </div>
                                         <div class="col-2 text-secondary hide-overflow">
-                                            <%= post.abstractId%>
+                                            <%= post.position%>
                                         </div>
                                         <a class="col-2" href="<%= post.fileName%>">Recipt</a>
                                         <div class="col-2 text-secondary hide-overflow">
-                                            <%= post.name%>
+                                            <%= post.presAuthor.name%>
                                         </div>
                                         <div class="col-3 text-secondary hide-overflow">
-                                            <%= post.email%>
+                                            <%= post.sbRefNo%>
                                         </div>
                                         <div class="col-2 text-secondary hide-overflow">
-                                            <%= post.phoneNo %> 
+                                            More details
                                         </div>
                                     </div>
                                     <% } %>

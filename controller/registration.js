@@ -121,7 +121,7 @@ exports.postAddRegisteration = async (req, res, next) => {
     try {
       const result = await register.save();
       if(result){
-       return res.status(200).json({ status: "success", message: "Registration added successfully" });
+       return res.status(200).json({ status: "success", message: "Registration added successfully", data: result });
       }
 
       return res.status(500).json({ status: "error", message: "Registration not added" });

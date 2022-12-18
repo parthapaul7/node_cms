@@ -4,25 +4,40 @@ const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const registrationSchema= new Schema(
   {
+    // for all 
+    position:{
+      type: String,
+      required: true
+    },
     fileName: {
       type: String,
       required: true,
     },
+    state:{
+      type: String,
+    },
+    sbRefNo:{
+      type: String,
+      required: true,
+    },
+    presAuthor:{
+      name:{type:String},
+      email:{type:String},
+      designation:{type:String},
+      institute:{type:String},
+      phone: {type:String}
+
+    },
+    // for only participant
     abstractId: {
       type: String,
-      required: true,
     },
-    name:{
+    // for only other
+    theme:{
       type: String,
-      required: true,
     },
-    email:{
-      type: String,
-      required: true,
-    },
-    phoneNo:{
-      type: String,
-      required: true,
+    title:{
+      type: String
     }
   },
   {
