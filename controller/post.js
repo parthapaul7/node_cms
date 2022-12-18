@@ -9,7 +9,7 @@ exports.getPosts = async (req, res, next) => {
   
   var message = req.flash("notification");
   page = +req.query.page || 1;
-  const sortBy = req.cookies?.sortBy || "author";
+  const sortBy = req.cookies.sortBy || "author";
   console.log(sortBy, "sortBy")
 
   try {
@@ -81,6 +81,12 @@ exports.postSortBy= async (req, res, next) => {
   }
 
   res.cookie("sortBy", temp, { maxAge: 24 * 3600000 });
+
+  console.log(req.params.sortId, "sortId")
+
+  if(req.params.sortId === "registration"){
+    return res.redirect("/registration")
+  }
   return res.redirect("/abstract");
 }
 
@@ -181,24 +187,27 @@ exports.postAddPost = (req, res, next) => {
   });
 };
 
-exports.getEditPost = async (req, res, next) => {
-  try {
-    const post = await Post.findOne({
-      _id: req.params.postId,
-      author: { userId: req.session.userId },
-    });
-    return res.render("post/edit-post", {
-      pageTitle: "Edit post",
-      post: post,
-      errFields: {
-        errTitle: "",
-        errDesc: "",
-      },
-    });
-  } catch (err) {
-    return next(err);
-  }
-};
+// exports.getEditPost = async (req, res, next) => {
+//   try {
+//     const post = await Post.findOne({
+//       _id: req.params.postId,
+//       author: { userId: req.session.userId },
+//     });
+//     return res.render("post/edit-post", {
+//       pageTitle: "Edit post",
+//       post: post,
+//       errFields: {
+//         errTitle: "",
+//         errDesc: "",
+//       },
+//     });
+//   } catch (err) {
+//     return next(err);
+//   }
+// };
+
+
+//! NOTE: using it for verification purpose 
 
 exports.postEditPost = async (req, res, next) => {
   // console.log(req.params.postId, req.user);

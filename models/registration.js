@@ -11,6 +11,18 @@ const registrationSchema= new Schema(
     abstractId: {
       type: String,
       required: true,
+    },
+    name:{
+      type: String,
+      required: true,
+    },
+    email:{
+      type: String,
+      required: true,
+    },
+    phoneNo:{
+      type: String,
+      required: true,
     }
   },
   {

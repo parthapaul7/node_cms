@@ -1,0 +1,69 @@
+<%- include('../includes/header.ejs') %>
+    <%- include('../includes/nav.ejs') %>
+        <div class="container">
+            <div class="mx-auto w-80 px-4 py-2 ">
+                <div class="my-2 mb-4 ">
+                    <form action="/registration" method="get" class="d-inline">
+                        <input type="text" name="search" value="<%= search %>"
+                            placeholder="Search Abstract Ids, Authors" class="py-1"
+                            style="min-width: 400px; width: 50%;">
+                        <input type="submit" value="Search" class="btn btn-primary">
+                        <span>|</span>
+                    </form>
+                    <form action="/abstract/sort/registration" method="post" class="d-inline">
+                        <% if(!isSortedByDate) { %>
+                            <input type="submit" class="btn btn-success" name="sortBy" value="Sort By Date">
+                            <% } else { %>
+                                <!-- <input type="submit" class="btn btn-success" name="sortBy" value="author"> -->
+                                <input type="submit" class="btn btn-success" name="sortBy" value="Sort By Author">
+                                <% } %>
+                    </form>
+                </div>
+                <h2>
+                    <%= pageTitle %> <small>(Total <%= totalItems %>)</small>
+                </h2>
+                <hr>
+                <div class="row my-3">
+                    <h6 class="col-1 text-secondary">Sl No</h6>
+                    <h6 class="col-2 text-secondary">Abstract Id</h6>
+                    <h6 class="col-2 text-secondary">File</h6>
+                    <h6 class="col-2 text-secondary">Name</h6>
+                    <h6 class="col-3 text-secondary">Email</h6>
+                    <h7 class="col-2 text-secondary">More Info</h7>
+                </div>
+                <hr>
+                <div class="main my-4">
+                    <% if(errMessage) { %>
+                        <div>
+                            <%= errMessage %>
+                        </div>
+                        <% } %>
+                            <% if (posts.length> 0) { %>
+                                <% for(let post of posts) { %>
+                                    <div class="post-item row">
+                                        <div class="col-1 text-secondary">
+                                            <%=post.index%>
+                                        </div>
+                                        <div class="col-2 text-secondary hide-overflow">
+                                            <%= post.abstractId%>
+                                        </div>
+                                        <a class="col-2" href="<%= post.fileName%>">Recipt</a>
+                                        <div class="col-2 text-secondary hide-overflow">
+                                            <%= post.name%>
+                                        </div>
+                                        <div class="col-3 text-secondary hide-overflow">
+                                            <%= post.email%>
+                                        </div>
+                                        <div class="col-2 text-secondary hide-overflow">
+                                            <%= post.phoneNo %> 
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                        <%} else { %>
+                                            <h2>No post found</h2>
+                                            <% } %>
+                </div>
+            </div>
+        </div>
+        <%- include('../includes/pagination.ejs') %>
+            <%- include('../includes/footer.ejs') %>

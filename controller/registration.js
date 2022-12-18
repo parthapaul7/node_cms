@@ -1,13 +1,55 @@
 const Registration = require("../models/registration");
 const multer = require("multer");
+const registration = require("../models/registration");
+let totalItems, page;
 
 exports.getRegisrationList = async (req, res, next) => {
-    console.log("getRegisrationList")
+  const tempPage = Number(req.cookies.itemsPerPage);
+  const ITEMS_PER_PAGE = tempPage || 20;
+  page = +req.query.page || 1;
+
+  let sortBy = req.cookies.sortBy || "name";
+  if(req.cookies.sortBy === "author"){
+    sortBy = "name"
+  }
+
   try {
-    const registration = await Registration.find();
+    let registration, isAbsBlocked, registrationsLength;
+    if (!req.query.search) {
+      registrationsLength= await Registration.find({}).countDocuments();
+      // isAbsBlocked = await Post.find({ abstractId: "default" });
+      registration= await Registration.find()
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE)
+        .sort({ [sortBy]: 1 });
+    } else {
+      registrationsLength= await Registration.find({
+        $text: { $search: `\"${req.query.search}\"` },
+      }).countDocuments();
+
+      // isAbsBlocked = await Post.find({ abstractId: "default" });
+      registration= await Registration.find({
+        $text: { $search: `\"${req.query.search}\"` },
+      })
+      .skip((page - 1) * ITEMS_PER_PAGE)
+      .limit(ITEMS_PER_PAGE)
+      .sort({ [sortBy]: 1 })
+    }
+
     res.render("registration/registration-list", {
       pageTitle: "Registration",
-      registration: registration,
+      posts: registration,
+      itemsPerPage: ITEMS_PER_PAGE,
+      totalItems: registrationsLength,
+      currentPage: page,
+      hasNextPage: ITEMS_PER_PAGE * page < registrationsLength,
+      hasPreviousPage: page > 1,
+      nextPage: page + 1,
+      previousPage: page - 1,
+      lastPage: Math.ceil(registrationsLength/ ITEMS_PER_PAGE),
+      search: req.query.search,
+      isSortedByDate: sortBy === "createdAt" ? true : false,
+      errMessage:  null,
     });
   } catch (err) {
     const error = new Error(err);
@@ -53,7 +95,6 @@ const upload = multer({ storage: storage }).single("recipt");
 
 exports.postAddRegisteration = async (req, res, next) => {
   upload(req, res, async function (err) {
-    console.log(req.file, "file")
     if (!req.file) {
       return res
         .status(400)
