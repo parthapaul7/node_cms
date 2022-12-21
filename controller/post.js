@@ -96,8 +96,12 @@ exports.getPostDetail = async (req, res, next) => {
   try {
     const post = await Post.findOne({ _id: req.params.postId }).populate('verifiedBy');
     const temp = new Date(post.createdAt);
-    const submissionDate =
-      temp.toLocaleDateString() + " | " + temp.toLocaleTimeString();
+    const submissionDate= new Intl.DateTimeFormat("en-US", {
+        dateStyle: "short",
+        timeStyle: "short",
+        timeZone: "Asia/Kolkata",
+      }).format(temp)
+      
     res.render("post/post-detail", {
       pageTitle: post.title,
       post: post,

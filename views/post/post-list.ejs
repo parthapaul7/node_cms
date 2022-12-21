@@ -43,9 +43,9 @@
               <% if (posts.length> 0) { %>
                 <% for(let post of posts) { %>
                   <div class="post-item row">
-                    <a class="col-2 text-secondary" href="/abstract/<%= post.id %>">
+                    <div class="col-2 text-secondary">
                       <%=post.abstractId %>
-                    </a>
+                    </div>
                     <div class="col-3 text-secondary hide-overflow">
                       <%= post.title %>
                     </div>

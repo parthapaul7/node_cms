@@ -9,31 +9,31 @@ exports.getRegisrationList = async (req, res, next) => {
   page = +req.query.page || 1;
 
   let sortBy = req.cookies.sortBy || "name";
-  if(req.cookies.sortBy === "author"){
-    sortBy = "name"
+  if (req.cookies.sortBy === "author") {
+    sortBy = "name";
   }
 
   try {
     let registration, isAbsBlocked, registrationsLength;
     if (!req.query.search) {
-      registrationsLength= await Registration.find({}).countDocuments();
+      registrationsLength = await Registration.find({}).countDocuments();
       // isAbsBlocked = await Post.find({ abstractId: "default" });
-      registration= await Registration.find()
+      registration = await Registration.find()
         .skip((page - 1) * ITEMS_PER_PAGE)
         .limit(ITEMS_PER_PAGE)
         .sort({ [sortBy]: 1 });
     } else {
-      registrationsLength= await Registration.find({
+      registrationsLength = await Registration.find({
         $text: { $search: `\"${req.query.search}\"` },
       }).countDocuments();
 
       // isAbsBlocked = await Post.find({ abstractId: "default" });
-      registration= await Registration.find({
+      registration = await Registration.find({
         $text: { $search: `\"${req.query.search}\"` },
       })
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE)
-      .sort({ [sortBy]: 1 })
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .limit(ITEMS_PER_PAGE)
+        .sort({ [sortBy]: 1 });
     }
 
     res.render("registration/registration-list", {
@@ -46,10 +46,10 @@ exports.getRegisrationList = async (req, res, next) => {
       hasPreviousPage: page > 1,
       nextPage: page + 1,
       previousPage: page - 1,
-      lastPage: Math.ceil(registrationsLength/ ITEMS_PER_PAGE),
+      lastPage: Math.ceil(registrationsLength / ITEMS_PER_PAGE),
       search: req.query.search,
       isSortedByDate: sortBy === "createdAt" ? true : false,
-      errMessage:  null,
+      errMessage: null,
     });
   } catch (err) {
     const error = new Error(err);
@@ -61,10 +61,19 @@ exports.getRegisrationList = async (req, res, next) => {
 exports.getRegstrationDetail = async (req, res, next) => {
   const registerId = req.params.registerId;
   try {
-    const registration = await Registration.findById(registerId);
+    const registration = await Registration.findOne({ _id: registerId });
+
+    const date = new Date(registration.createdAt);
+    const fDate=  new Intl.DateTimeFormat("en-US", {
+        dateStyle: "short",
+        timeStyle: "short",
+        timeZone: "Asia/Kolkata",
+      }).format(date)
+
     res.render("registration/registration-detail", {
       pageTitle: "Registration",
-      registration: registration,
+      post: registration,
+      submissionDate: fDate,
     });
   } catch (err) {
     const error = new Error(err);
@@ -102,33 +111,44 @@ exports.postAddRegisteration = async (req, res, next) => {
     }
 
     if (req.file.size > 5000000) {
-      return res
-        .status(500)
-        .json({
-          status: "error",
-          message: "File size too large need less than 5 MB",
-        });
+      return res.status(500).json({
+        status: "error",
+        message: "File size too large need less than 5 MB",
+      });
     }
 
     const file_link =
       process.env.BASE_FILE_URL_NEW + "registrations/" + req.file.filename;
 
-    const register= new Registration({
+    const register = new Registration({
       ...req.body,
       fileName: file_link,
     });
 
     try {
       const result = await register.save();
-      if(result){
-       return res.status(200).json({ status: "success", message: "Registration added successfully", data: result });
+      if (result) {
+        return res
+          .status(200)
+          .json({
+            status: "success",
+            message: "Registration added successfully",
+            data: result,
+          });
       }
 
-      return res.status(500).json({ status: "error", message: "Registration not added" });
-
+      return res
+        .status(500)
+        .json({ status: "error", message: "Registration not added" });
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({ status: "error", message: "Registration not added", error: error });
+      console.log(error);
+      return res
+        .status(500)
+        .json({
+          status: "error",
+          message: "Registration not added",
+          error: error,
+        });
     }
   });
 };

@@ -1,0 +1,92 @@
+<%- include('../includes/header.ejs') %>
+	<%- include('../includes/nav.ejs') %>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="mx-auto w-80 px-4 py-2 bg-light mb-5 ">
+						<h3 class="my-1 mx-3">
+                            Details
+						</h3>
+						<hr>
+						<div class="my-4 mx-3">
+									<div class="row my-2">
+										<div class="col-4">Sl No.</div>
+										<p class="col-8">
+											<%= post.index%>
+										</p>
+									</div>
+									<div class="row my-2">
+										<div class="col-4">Position</div>
+										<div class="col-8">
+											<%= post.position%>
+										</div>
+									</div>
+									<div class="row my-2">
+										<div class="col-4">Theme</div>
+										<div class="col-8">
+											<%= post?.theme%>
+										</div>
+									</div>
+									<div class="row my-2">
+										<div class="col-4">Title</div>
+										<div class="col-8">
+											<%= post?.title %>
+										</div>
+									</div>
+									
+									<hr>
+
+									<div class="row my-2">
+										<div class="col-4">Presenting Author</div>
+										<div class="col-8">
+											<%= post.presAuthor?.name%>
+										</div>
+									</div>
+                                    <div class="row my-2">
+										<div class="col-4"></div>
+										<div class="col-8">
+											<%= post.presAuthor?.institute%>
+										</div>
+									</div>
+									<div class="row my-2">
+										<div class="col-4"></div>
+										<div class="col-8">
+											<%= post.presAuthor?.email%>
+										</div>
+									</div>
+									<div class="row my-2">
+										<div class="col-4"></div>
+										<div class="col-8">
+											<%= post.presAuthor?.phoneNo%>
+										</div>
+									</div>
+									<hr>
+
+									<div class="row my-2">
+										<div class="col-4">SBCollect Ref No.</div>
+										<p class="col-8">
+                                            <%= post.sbRefNo%>
+										</p>
+									</div>
+                                    <a target="_blank" href="<%= post.fileName%>" id="">Download file</a>
+									<hr>
+									<div class="row my-2">
+										<div class="col-4"> File Location</div>
+										<p class="col-8">
+											<%= post.fileName%>
+										</p>
+									</div>
+									<div class="row my-2">
+										<div class="col-4">Time of Submission </div>
+										<p class="col-8">
+											<%= submissionDate%>
+										</p>
+									</div>
+									<hr>
+									<hr>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<%- include('../includes/footer.ejs') %>

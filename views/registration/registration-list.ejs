@@ -47,16 +47,16 @@
                                         <div class="col-2 text-secondary hide-overflow">
                                             <%= post.position%>
                                         </div>
-                                        <a class="col-2" href="<%= post.fileName%>">Recipt</a>
+                                        <a class="col-2" href="<%= post.fileName%>">Receipt</a>
                                         <div class="col-2 text-secondary hide-overflow">
                                             <%= post.presAuthor.name%>
                                         </div>
                                         <div class="col-3 text-secondary hide-overflow">
                                             <%= post.sbRefNo%>
                                         </div>
-                                        <div class="col-2 text-secondary hide-overflow">
+                                        <a href="/registration/<%= post._id %>" class="col-2 text-secondary hide-overflow">
                                             More details
-                                        </div>
+                                        </a>
                                     </div>
                                     <% } %>
                                         <%} else { %>
