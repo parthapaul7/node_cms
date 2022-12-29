@@ -25,8 +25,9 @@ const registrationSchema= new Schema(
       email:{type:String},
       designation:{type:String},
       institute:{type:String},
-      phone: {type:String}
-
+      phone: {type:String},
+      noOfAccompany:{type:Number},
+      accompany:{type:String}
     },
     // for only participant
     abstractId: {

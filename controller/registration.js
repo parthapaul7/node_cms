@@ -10,7 +10,7 @@ exports.getRegisrationList = async (req, res, next) => {
 
   let sortBy = req.cookies.sortBy || "name";
   if (req.cookies.sortBy === "author") {
-    sortBy = "name";
+    sortBy = "presAuthor.name";
   }
 
   try {
