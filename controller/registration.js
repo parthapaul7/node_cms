@@ -8,13 +8,13 @@ exports.getRegisrationList = async (req, res, next) => {
   const ITEMS_PER_PAGE = tempPage || 20;
   page = +req.query.page || 1;
 
-  let sortBy = req.cookies.sortBy || "name";
+  let sortBy = req.cookies.sortBy || "presAuthor.name";
   if (req.cookies.sortBy === "author") {
     sortBy = "presAuthor.name";
   }
 
   try {
-    let registration, isAbsBlocked, registrationsLength;
+    let registration, registrationsLength;
     if (!req.query.search) {
       registrationsLength = await Registration.find({}).countDocuments();
       // isAbsBlocked = await Post.find({ abstractId: "default" });
